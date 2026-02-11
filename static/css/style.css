@@ -403,3 +403,829 @@ body.light-theme {
         max-width: 85%;
     }
 }
+
+
+/* =============== AMÉLIORATIONS RESPONSIVE AVANCÉES =============== */
+
+/* Variables responsives */
+:root {
+    --container-padding-desktop: 30px 20px;
+    --container-padding-tablet: 20px 15px;
+    --container-padding-mobile: 15px 10px;
+    --navbar-padding-desktop: 15px 40px;
+    --navbar-padding-tablet: 12px 25px;
+    --navbar-padding-mobile: 10px 15px;
+    --font-size-h1-desktop: 32px;
+    --font-size-h1-tablet: 28px;
+    --font-size-h1-mobile: 24px;
+    --font-size-body-desktop: 16px;
+    --font-size-body-tablet: 15px;
+    --font-size-body-mobile: 14px;
+}
+
+/* Optimisation des performances pour le responsive */
+* {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-size: var(--font-size-body-desktop);
+    line-height: 1.6;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* =============== NAVIGATION AMÉLIORÉE =============== */
+
+.navbar {
+    padding: var(--navbar-padding-desktop);
+    transition: all 0.3s ease;
+}
+
+/* Menu burger pour mobile */
+.burger-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    cursor: pointer;
+    z-index: 200;
+}
+
+.burger-menu span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.burger-menu.active span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+}
+
+.burger-menu.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.burger-menu.active span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+}
+
+/* Navigation améliorée */
+.navbar-menu {
+    transition: all 0.3s ease;
+}
+
+.nav-item {
+    position: relative;
+    white-space: nowrap;
+}
+
+.nav-item i {
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+}
+
+.nav-item:hover i {
+    transform: scale(1.1);
+}
+
+/* Indicateur de page active amélioré */
+.nav-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 3px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.nav-item.active:hover::after {
+    width: 40px;
+}
+
+/* =============== SYSTÈME DE GRILLE FLEXIBLE =============== */
+
+/* Grid système responsive */
+.grid {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    margin: 20px 0;
+}
+
+.grid-2 {
+    display: grid;
+    gap: 25px;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-3 {
+    display: grid;
+    gap: 25px;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-4 {
+    display: grid;
+    gap: 25px;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* Flexbox utilities */
+.flex-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* =============== CARTES AMÉLIORÉES =============== */
+
+.card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-body {
+    flex: 1;
+    padding: 20px 0;
+}
+
+.card-footer {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* =============== CHAT INTERFACE OPTIMISÉE =============== */
+
+.chat-container {
+    height: calc(100vh - 180px);
+    min-height: 500px;
+    max-height: 800px;
+}
+
+.contacts-sidebar {
+    width: 300px;
+    min-width: 250px;
+    transition: all 0.3s ease;
+}
+
+.contacts-header {
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: sticky;
+    top: 0;
+    background: inherit;
+    z-index: 10;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+}
+
+.contact-item:hover {
+    background: rgba(102, 126, 234, 0.1);
+    border-left-color: #667eea;
+}
+
+.contact-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.contact-info {
+    flex: 1;
+    min-width: 0; /* Permet le text-overflow */
+}
+
+.contact-name {
+    font-weight: 600;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.contact-last-message {
+    font-size: 12px;
+    color: #a0a0c0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Messages améliorés */
+.message {
+    max-width: 70%;
+    margin-bottom: 20px;
+    animation: fadeInMessage 0.3s ease;
+}
+
+@keyframes fadeInMessage {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message-content {
+    max-width: 100%;
+    word-break: break-word;
+}
+
+.message-media {
+    max-width: 100%;
+    border-radius: 12px;
+    margin-top: 8px;
+}
+
+.message-input-container {
+    position: sticky;
+    bottom: 0;
+}
+
+.message-input {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+.message-input textarea {
+    flex: 1;
+    min-height: 40px;
+    max-height: 120px;
+    resize: vertical;
+    padding: 10px 16px;
+}
+
+/* =============== ONDELETS/ONGLETS AMÉLIORÉS =============== */
+
+.tabs-container {
+    margin: 20px 0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.tabs-header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    background: rgba(30, 35, 50, 0.5);
+    padding: 10px;
+    border-radius: 12px 12px 0 0;
+}
+
+.tab-item {
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+}
+
+.tab-item i {
+    font-size: 1.1rem;
+}
+
+.tab-item:hover {
+    background: rgba(102, 126, 234, 0.1);
+    color: #667eea;
+}
+
+.tab-item.active {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+.tab-content {
+    padding: 25px;
+    background: rgba(30, 35, 50, 0.3);
+    border-radius: 0 0 12px 12px;
+}
+
+.tab-pane {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+/* =============== INTERFACES FLEXIBLES =============== */
+
+/* Dashboard cards */
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 16px;
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    background: rgba(102, 126, 234, 0.15);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.stat-info {
+    flex: 1;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    color: #a0a0c0;
+    font-size: 14px;
+}
+
+/* Tables responsives */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 20px 0;
+    border-radius: 12px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+th, td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+th {
+    background: rgba(102, 126, 234, 0.1);
+    color: #667eea;
+    font-weight: 600;
+}
+
+/* =============== UTILITAIRES RESPONSIVE =============== */
+
+/* Images et médias flexibles */
+img, video, iframe, canvas, svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Texte responsive */
+h1 { font-size: var(--font-size-h1-desktop); }
+h2 { font-size: calc(var(--font-size-h1-desktop) * 0.8); }
+h3 { font-size: calc(var(--font-size-h1-desktop) * 0.7); }
+h4 { font-size: calc(var(--font-size-h1-desktop) * 0.6); }
+
+/* Hide/Show utilities */
+.hide-mobile {
+    display: block;
+}
+.hide-tablet {
+    display: block;
+}
+.hide-desktop {
+    display: none;
+}
+.show-mobile {
+    display: none;
+}
+
+/* Scrollbar personnalisée */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(102, 126, 234, 0.5);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 126, 234, 0.8);
+}
+
+/* =============== MEDIA QUERIES PRINCIPALES =============== */
+
+/* Tablettes (paysage et portrait) */
+@media screen and (max-width: 1024px) {
+    :root {
+        --font-size-h1-desktop: var(--font-size-h1-tablet);
+        --font-size-body-desktop: var(--font-size-body-tablet);
+    }
+    
+    .grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .chat-container {
+        height: 600px;
+    }
+    
+    .container {
+        padding: 20px 15px;
+    }
+}
+
+/* Tablettes et grands mobiles */
+@media screen and (max-width: 768px) {
+    :root {
+        --navbar-padding-desktop: var(--navbar-padding-tablet);
+    }
+    
+    /* Burger menu */
+    .burger-menu {
+        display: flex;
+    }
+    
+    .navbar {
+        position: relative;
+        padding: 12px 25px;
+    }
+    
+    .navbar-menu {
+        position: fixed;
+        top: 80px;
+        left: -100%;
+        width: 80%;
+        max-width: 300px;
+        height: calc(100vh - 80px);
+        background: rgba(10, 14, 23, 0.98);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 30px 20px;
+        gap: 15px;
+        transition: left 0.3s ease;
+        z-index: 99;
+        border-right: 1px solid rgba(102, 126, 234, 0.3);
+        overflow-y: auto;
+    }
+    
+    .navbar-menu.active {
+        left: 0;
+    }
+    
+    .nav-item {
+        width: 100%;
+        padding: 12px 20px;
+    }
+    
+    .nav-item.active::after {
+        width: 40px;
+    }
+    
+    /* Grids */
+    .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    /* Chat */
+    .chat-container {
+        flex-direction: column;
+        height: 500px;
+    }
+    
+    .contacts-sidebar {
+        width: 100%;
+        height: 250px;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .message {
+        max-width: 85%;
+    }
+    
+    /* Tabs */
+    .tabs-header {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 5px;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .tab-item {
+        white-space: nowrap;
+        padding: 10px 16px;
+    }
+    
+    /* Hide/Show */
+    .hide-tablet {
+        display: none;
+    }
+    
+    .show-mobile {
+        display: block;
+    }
+}
+
+/* Mobiles */
+@media screen and (max-width: 480px) {
+    :root {
+        --font-size-h1-desktop: var(--font-size-h1-mobile);
+        --font-size-body-desktop: var(--font-size-body-mobile);
+        --navbar-padding-desktop: var(--navbar-padding-mobile);
+    }
+    
+    .container {
+        padding: 15px 10px;
+    }
+    
+    .navbar {
+        padding: 10px 15px;
+    }
+    
+    .app-name {
+        font-size: 20px;
+    }
+    
+    .logo {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .navbar-menu {
+        top: 70px;
+        height: calc(100vh - 70px);
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    
+    .btn-lg {
+        padding: 12px 24px;
+        font-size: 16px;
+    }
+    
+    .card {
+        padding: 20px;
+    }
+    
+    .stat-card {
+        padding: 20px;
+    }
+    
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+    
+    .stat-value {
+        font-size: 24px;
+    }
+    
+    .message {
+        max-width: 95%;
+    }
+    
+    .contact-avatar {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .tabs-container {
+        margin: 10px 0;
+    }
+    
+    .tab-content {
+        padding: 15px;
+    }
+    
+    .verse-banner {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+    
+    /* Hide/Show */
+    .hide-mobile {
+        display: none;
+    }
+    
+    .show-mobile {
+        display: block;
+    }
+}
+
+/* Petits mobiles */
+@media screen and (max-width: 360px) {
+    .app-name {
+        font-size: 18px;
+    }
+    
+    .navbar-menu {
+        width: 100%;
+        max-width: none;
+    }
+    
+    .contact-item {
+        padding: 10px 15px;
+    }
+    
+    .stat-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .tab-item {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+}
+
+/* Mode paysage sur mobile */
+@media screen and (max-height: 480px) and (orientation: landscape) {
+    .chat-container {
+        height: 300px;
+    }
+    
+    .navbar-menu {
+        top: 70px;
+        height: calc(100vh - 70px);
+    }
+    
+    .contacts-sidebar {
+        height: 200px;
+    }
+    
+    .message {
+        max-width: 80%;
+    }
+}
+
+/* Impressions */
+@media print {
+    .navbar, .verse-banner, .btn, .chat-container {
+        display: none;
+    }
+    
+    body, .container, .card {
+        background: white;
+        color: black;
+    }
+}
+
+/* =============== ACCESSIBILITÉ =============== */
+
+/* Focus styles */
+:focus {
+    outline: 3px solid rgba(102, 126, 234, 0.5);
+    outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+:focus-visible {
+    outline: 3px solid rgba(102, 126, 234, 0.5);
+    outline-offset: 2px;
+}
+
+/* Réduction de mouvement */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Support du mode sombre système */
+@media (prefers-color-scheme: dark) {
+    body:not(.light-theme) {
+        background: #0a0e17;
+        color: #ffffff;
+    }
+}
+
+/* =============== ANIMATIONS RESPONSIVE =============== */
+
+@keyframes slideInFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Classes d'animation */
+.slide-in-left {
+    animation: slideInFromLeft 0.5s ease;
+}
+
+.slide-in-right {
+    animation: slideInFromRight 0.5s ease;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease;
+}
+
+/* =============== FIN DES AMÉLIORATIONS RESPONSIVE =============== */
