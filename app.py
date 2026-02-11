@@ -1378,3 +1378,302 @@ def health_check():
         'users_count': User.query.count(),
         'messages_count': Message.query.count()
     })
+
+# =============== ROUTES POUR LES NOUVELLES FONCTIONNALITÉS ===============
+
+
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+@app.route("/api/add_contact/<int:contact_id>", methods=["POST"])
+def add_contact(contact_id):
+    # Exemple de traitement
+    data = request.get_json(silent=True)  # si tu envoies du JSON
+    return jsonify({
+        "message": f"Contact {contact_id} ajouté avec succès",
+        "data": data
+    })
+
+
+@app.route('/upload_avatar', methods=['POST'])
+@login_required
+def upload_avatar():
+    """Upload de photo de profil"""
+    try:
+        if 'avatar' not in request.files:
+            return jsonify({'success': False, 'message': 'Aucun fichier'})
+        
+        file = request.files['avatar']
+        if file.filename == '':
+            return jsonify({'success': False, 'message': 'Aucun fichier sélectionné'})
+        
+        # Sécuriser le nom du fichier
+        filename = secure_filename(f"user_{current_user.id}_{int(time.time())}.jpg")
+        
+        # Créer le dossier si nécessaire
+        upload_folder = os.path.join('static', 'avatars')
+        os.makedirs(upload_folder, exist_ok=True)
+        
+        # Sauvegarder le fichier
+        file_path = os.path.join(upload_folder, filename)
+        file.save(file_path)
+        
+        # Optimiser l'image
+        from PIL import Image
+        img = Image.open(file_path)
+        img.thumbnail((300, 300))  # Redimensionner
+        img.save(file_path, 'JPEG', quality=85)
+        
+        # Mettre à jour la base de données
+        avatar_url = url_for('static', filename=f'avatars/{filename}')
+        current_user.avatar_url = avatar_url
+        db.session.commit()
+        
+        return jsonify({'success': True, 'avatar_url': avatar_url})
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)})
+
+@app.route('/send_invitation', methods=['POST'])
+@login_required
+def send_invitation():
+    """Envoyer une invitation à un utilisateur"""
+    data = request.get_json()
+    username = data.get('username')
+    
+    # Vérifier si l'utilisateur existe
+    user = User.query.filter_by(username=username).first()
+    if not user:
+        return jsonify({'success': False, 'message': 'Utilisateur non trouvé'})
+    
+    if user.id == current_user.id:
+        return jsonify({'success': False, 'message': 'Vous ne pouvez pas vous ajouter vous-même'})
+    
+    # Vérifier si l'invitation existe déjà
+    existing = ContactInvitation.query.filter_by(
+        sender_id=current_user.id,
+        receiver_id=user.id,
+        status='pending'
+    ).first()
+    
+    if existing:
+        return jsonify({'success': False, 'message': 'Invitation déjà envoyée'})
+    
+    # Créer l'invitation
+    invitation = ContactInvitation(
+        sender_id=current_user.id,
+        receiver_id=user.id,
+        status='pending'
+    )
+    db.session.add(invitation)
+    db.session.commit()
+    
+    # Notifier en temps réel
+    emit_invitation_notification(user.id, {
+        'id': invitation.id,
+        'from_username': current_user.username,
+        'from_avatar': current_user.avatar_url
+    })
+    
+    return jsonify({'success': True})
+
+@app.route('/get_invitations', methods=['GET'])
+@login_required
+def get_invitations():
+    """Récupérer les invitations reçues"""
+    invitations = ContactInvitation.query.filter_by(
+        receiver_id=current_user.id,
+        status='pending'
+    ).all()
+    
+    data = []
+    for inv in invitations:
+        user = User.query.get(inv.sender_id)
+        data.append({
+            'id': inv.id,
+            'username': user.username,
+            'avatar_url': user.avatar_url
+        })
+    
+    return jsonify({'invitations': data})
+
+@app.route('/accept_invitation', methods=['POST'])
+@login_required
+def accept_invitation():
+    """Accepter une invitation"""
+    data = request.get_json()
+    invitation_id = data.get('invitation_id')
+    
+    invitation = ContactInvitation.query.get_or_404(invitation_id)
+    
+    if invitation.receiver_id != current_user.id:
+        return jsonify({'success': False, 'message': 'Non autorisé'})
+    
+    invitation.status = 'accepted'
+    
+    # Créer la relation de contact
+    contact1 = Contact(user_id=invitation.sender_id, contact_id=invitation.receiver_id)
+    contact2 = Contact(user_id=invitation.receiver_id, contact_id=invitation.sender_id)
+    
+    db.session.add(contact1)
+    db.session.add(contact2)
+    db.session.commit()
+    
+    # Notifier l'expéditeur
+    emit_invitation_accepted(invitation.sender_id, {
+        'username': current_user.username,
+        'avatar_url': current_user.avatar_url
+    })
+    
+    return jsonify({'success': True})
+
+@app.route('/reject_invitation', methods=['POST'])
+@login_required
+def reject_invitation():
+    """Refuser une invitation"""
+    data = request.get_json()
+    invitation_id = data.get('invitation_id')
+    
+    invitation = ContactInvitation.query.get_or_404(invitation_id)
+    
+    if invitation.receiver_id != current_user.id:
+        return jsonify({'success': False, 'message': 'Non autorisé'})
+    
+    invitation.status = 'rejected'
+    db.session.commit()
+    
+    return jsonify({'success': True})
+
+@app.route('/send_message_direct', methods=['POST'])
+@login_required
+def send_message_direct():
+    """Envoyer un message direct (même sans être contact)"""
+    data = request.get_json()
+    receiver_id = data.get('receiver_id')
+    content = data.get('content')
+    message_type = data.get('message_type', 'text')
+    
+    # Vérifier si l'utilisateur existe
+    receiver = User.query.get(receiver_id)
+    if not receiver:
+        return jsonify({'success': False, 'message': 'Utilisateur non trouvé'})
+    
+    # Créer le message
+    message = Message(
+        sender_id=current_user.id,
+        receiver_id=receiver_id,
+        content=content,
+        message_type=message_type,
+        is_read=False
+    )
+    db.session.add(message)
+    db.session.commit()
+    
+    # Traduire le message
+    translated_content = translate_text(content, receiver.language)
+    
+    # Notifier en temps réel
+    emit_new_message(receiver_id, {
+        'id': message.id,
+        'sender_id': current_user.id,
+        'sender_name': current_user.username,
+        'sender_avatar': current_user.avatar_url,
+        'content': content,
+        'translated_content': translated_content,
+        'timestamp': message.timestamp.strftime('%H:%M'),
+        'message_type': message_type
+    })
+    
+    return jsonify({'success': True, 'message_id': message.id})
+
+@app.route('/send_voice_message', methods=['POST'])
+@login_required
+def send_voice_message():
+    """Envoyer un message vocal"""
+    try:
+        if 'audio' not in request.files:
+            return jsonify({'success': False, 'message': 'Aucun fichier audio'})
+        
+        audio = request.files['audio']
+        receiver_id = request.form.get('receiver_id')
+        
+        # Sauvegarder le fichier audio
+        filename = secure_filename(f"voice_{current_user.id}_{int(time.time())}.webm")
+        upload_folder = os.path.join('static', 'voice_messages')
+        os.makedirs(upload_folder, exist_ok=True)
+        
+        file_path = os.path.join(upload_folder, filename)
+        audio.save(file_path)
+        
+        # Créer le message
+        voice_url = url_for('static', filename=f'voice_messages/{filename}')
+        message = Message(
+            sender_id=current_user.id,
+            receiver_id=receiver_id,
+            content=voice_url,
+            message_type='voice',
+            is_read=False
+        )
+        db.session.add(message)
+        db.session.commit()
+        
+        # Notifier
+        emit_new_message(receiver_id, {
+            'id': message.id,
+            'sender_id': current_user.id,
+            'sender_name': current_user.username,
+            'sender_avatar': current_user.avatar_url,
+            'content': voice_url,
+            'timestamp': message.timestamp.strftime('%H:%M'),
+            'message_type': 'voice',
+            'duration': request.form.get('duration', '0:03')
+        })
+        
+        return jsonify({'success': True, 'voice_url': voice_url})
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)})
+
+def emit_invitation_notification(user_id, data):
+    """Émettre une notification d'invitation"""
+    from flask_socketio import emit
+    socketio.emit('new_invitation', data, room=f'user_{user_id}')
+
+def emit_invitation_accepted(user_id, data):
+    """Émettre une notification d'invitation acceptée"""
+    from flask_socketio import emit
+    socketio.emit('invitation_accepted', data, room=f'user_{user_id}')
+
+def emit_new_message(user_id, data):
+    """Émettre un nouveau message"""
+    from flask_socketio import emit
+    socketio.emit('direct_message', data, room=f'user_{user_id}')
+
+# Ajouter les modèles manquants
+class Contact(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    contact_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+class ContactInvitation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    status = db.Column(db.String(20), default='pending')  # pending, accepted, rejected
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, onupdate=datetime.utcnow)
+
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    content = db.Column(db.Text)
+    message_type = db.Column(db.String(20), default='text')  # text, image, voice, file
+    is_read = db.Column(db.Boolean, default=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+# Ajouter le champ avatar_url au modèle User
+class User(UserMixin, db.Model):
+    # ... vos champs existants ...
+    avatar_url = db.Column(db.String(500), default='/static/avatars/default.png')
+    language = db.Column(db.String(10), default='fr')
