@@ -88,14 +88,61 @@
         border-color: #667eea;
     }
 
-    .contacts-grid {
+    .tabs {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 30px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 15px;
+        flex-wrap: wrap;
+    }
+
+    .tab {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 20px;
+        color: #a0a0c0;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: all 0.3s;
+    }
+
+    .tab.active {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+    }
+
+    .tab i {
+        font-size: 16px;
+    }
+
+    .invitations-badge {
+        background: #e74c3c;
+        color: white;
+        border-radius: 50%;
+        padding: 2px 6px;
+        font-size: 12px;
+        margin-left: 5px;
+    }
+
+    .total-users-badge {
+        background: rgba(102, 126, 234, 0.3);
+        color: #667eea;
+        border-radius: 20px;
+        padding: 2px 10px;
+        font-size: 12px;
+        margin-left: 10px;
+    }
+
+    .contacts-grid, .invitations-grid, .explorer-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 25px;
         margin-top: 30px;
     }
 
-    .contact-card {
+    .contact-card, .invitation-card, .explorer-card {
         background: rgba(30, 35, 50, 0.7);
         border-radius: 16px;
         padding: 25px;
@@ -104,7 +151,7 @@
         position: relative;
     }
 
-    .contact-card:hover {
+    .contact-card:hover, .invitation-card:hover, .explorer-card:hover {
         transform: translateY(-5px);
         border-color: #667eea;
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
@@ -128,6 +175,15 @@
         font-size: 24px;
         color: white;
         font-weight: 600;
+        position: relative;
+    }
+
+    .profile-image {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid rgba(255, 255, 255, 0.2);
     }
 
     .contact-info {
@@ -152,6 +208,7 @@
         height: 10px;
         background: #2ecc71;
         border-radius: 50%;
+        box-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
     }
 
     .offline-dot {
@@ -159,6 +216,12 @@
         height: 10px;
         background: #e74c3c;
         border-radius: 50%;
+    }
+
+    .last-seen {
+        font-size: 12px;
+        color: #a0a0c0;
+        margin-top: 2px;
     }
 
     .contact-details {
@@ -235,20 +298,64 @@
         background: rgba(231, 76, 60, 0.2);
     }
 
-    .no-contacts {
+    .btn-profile {
+        background: rgba(102, 126, 234, 0.1);
+        color: #667eea;
+        border: 1px solid rgba(102, 126, 234, 0.3);
+    }
+
+    .invitation-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: #f39c12;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .member-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: #2ecc71;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .invitation-message {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+        color: #a0a0c0;
+        font-size: 14px;
+        border-left: 3px solid #667eea;
+    }
+
+    .no-contacts, .no-invitations, .no-users {
         grid-column: 1 / -1;
         text-align: center;
         padding: 60px 20px;
         color: #a0a0c0;
     }
 
-    .no-contacts i {
+    .no-contacts i, .no-invitations i, .no-users i {
         font-size: 60px;
         margin-bottom: 20px;
         color: rgba(102, 126, 234, 0.5);
     }
 
-    .no-contacts h3 {
+    .no-contacts h3, .no-invitations h3, .no-users h3 {
         color: white;
         margin-bottom: 15px;
         font-size: 24px;
@@ -333,6 +440,92 @@
         line-height: 1.6;
     }
 
+    .language-badge {
+        display: inline-block;
+        background: rgba(102, 126, 234, 0.2);
+        color: #667eea;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+    }
+
+    .notification-toast {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        padding: 15px 25px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        z-index: 1100;
+        animation: slideIn 0.3s ease;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    }
+
+    .filter-bar {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 25px;
+        flex-wrap: wrap;
+    }
+
+    .filter-select {
+        padding: 10px 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        color: white;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .filter-select option {
+        background: #1e2332;
+        color: white;
+    }
+
+    .stats-card {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(102, 126, 234, 0.3);
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-value {
+        font-size: 32px;
+        color: white;
+        font-weight: bold;
+    }
+
+    .stat-label {
+        color: #a0a0c0;
+        font-size: 14px;
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
     @media (max-width: 768px) {
         .contacts-header {
             flex-direction: column;
@@ -344,11 +537,20 @@
         }
         
         .contacts-grid,
-        .groups-grid {
+        .groups-grid,
+        .explorer-grid {
             grid-template-columns: 1fr;
         }
         
         .contact-actions {
+            flex-direction: column;
+        }
+        
+        .tabs {
+            flex-wrap: wrap;
+        }
+        
+        .stats-card {
             flex-direction: column;
         }
     }
@@ -360,11 +562,11 @@
     <div class="contacts-header">
         <div>
             <h1>Mes Contacts</h1>
-            <p>Gérez vos contacts et groupes de discussion</p>
+            <p>Gérez vos contacts, invitations et découvrez tous les utilisateurs de MISPA 7.0</p>
         </div>
         
         <div class="contacts-search">
-            <input type="text" class="search-input" placeholder="Rechercher un contact..." id="searchInput">
+            <input type="text" class="search-input" placeholder="Rechercher un utilisateur..." id="searchInput">
             <button class="search-btn" id="searchBtn">
                 <i class="fas fa-search"></i> Rechercher
             </button>
@@ -383,65 +585,312 @@
         </a>
     </div>
 
-    <div class="contacts-grid" id="contactsGrid">
-        {% if users %}
-            {% for user in users %}
-            <div class="contact-card" data-user-id="{{ user.id }}">
-                <div class="contact-header">
-                    <div class="contact-avatar">
-                        {{ user.username[:1]|upper }}
-                    </div>
-                    <div class="contact-info">
-                        <div class="contact-name">{{ user.username }}</div>
-                        <div class="contact-status">
-                            {% if user.is_online %}
-                            <span class="online-dot"></span> En ligne
-                            {% else %}
-                            <span class="offline-dot"></span> Hors ligne
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="contact-details">
-                    <div class="detail-item">
-                        <i class="fas fa-envelope"></i>
-                        <span>{{ user.email }}</span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-language"></i>
-                        <span>{{ config.SUPPORTED_LANGUAGES.get(user.language, user.language) }}</span>
-                    </div>
-                </div>
-
-                <div class="contact-actions">
-                    {% if user.is_contact %}
-                    <button class="contact-btn btn-message" onclick="startChat({{ user.id }})">
-                        <i class="fas fa-comment"></i> Message
-                    </button>
-                    <button class="contact-btn btn-remove" onclick="removeContact({{ user.id }})">
-                        <i class="fas fa-user-minus"></i> Retirer
-                    </button>
-                    {% else %}
-                    <button class="contact-btn btn-add" onclick="addContact({{ user.id }})">
-                        <i class="fas fa-user-plus"></i> Ajouter
-                    </button>
-                    {% endif %}
-                </div>
-            </div>
-            {% endfor %}
-        {% else %}
-            <div class="no-contacts">
-                <i class="fas fa-users"></i>
-                <h3>Aucun contact trouvé</h3>
-                <p>Commencez par ajouter des contacts pour discuter avec eux</p>
-                <button class="action-btn" onclick="openNewContactModal()" style="margin-top: 20px;">
-                    <i class="fas fa-user-plus"></i> Ajouter votre premier contact
-                </button>
-            </div>
-        {% endif %}
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab('contacts')" id="tab-contacts">
+            <i class="fas fa-address-book"></i> Mes Contacts
+            <span class="invitations-badge" id="contacts-count">{{ contacts|length if contacts else 0 }}</span>
+        </div>
+        <div class="tab" onclick="switchTab('explorer')" id="tab-explorer">
+            <i class="fas fa-globe"></i> Explorer
+            <span class="total-users-badge" id="total-users-count">{{ all_users|length if all_users else 0 }}</span>
+        </div>
+        <div class="tab" onclick="switchTab('invitations')" id="tab-invitations">
+            <i class="fas fa-paper-plane"></i> Invitations
+            <span class="invitations-badge" id="invitations-count">{{ invitations|length if invitations else 0 }}</span>
+        </div>
     </div>
 
+    <!-- Section Mes Contacts -->
+    <div id="contacts-section">
+        <div class="contacts-grid" id="contactsGrid">
+            {% if contacts %}
+                {% for contact in contacts %}
+                <div class="contact-card" data-user-id="{{ contact.id }}" data-language="{{ contact.language }}" data-status="{{ 'online' if contact.is_online else 'offline' }}" data-last-seen="{{ contact.last_seen_timestamp|default(0) }}">
+                    <div class="contact-header">
+                        <div class="contact-avatar">
+                            {% if contact.profile_image %}
+                                <img src="{{ contact.profile_image }}" alt="{{ contact.username }}" class="profile-image">
+                            {% else %}
+                                {{ contact.username[:1]|upper }}
+                            {% endif %}
+                        </div>
+                        <div class="contact-info">
+                            <div class="contact-name">{{ contact.username }}</div>
+                            <div class="contact-status">
+                                {% if contact.is_online %}
+                                <span class="online-dot"></span> En ligne
+                                {% else %}
+                                <span class="offline-dot"></span> Hors ligne
+                                <span class="last-seen">• {{ contact.last_seen_formatted|default('Dernière connexion inconnue') }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contact-details">
+                        <div class="detail-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>{{ contact.email }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-language"></i>
+                            <span class="language-badge">{{ config.SUPPORTED_LANGUAGES.get(contact.language, 'Français') }}</span>
+                        </div>
+                    </div>
+
+                    <div class="contact-actions">
+                        <button class="contact-btn btn-message" onclick="sendMessageToContact({{ contact.id }}, '{{ contact.language }}')">
+                            <i class="fas fa-comment"></i> Message
+                        </button>
+                        <button class="contact-btn btn-remove" onclick="removeContact({{ contact.id }})">
+                            <i class="fas fa-user-minus"></i> Retirer
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-contacts">
+                    <i class="fas fa-users"></i>
+                    <h3>Aucun contact trouvé</h3>
+                    <p>Commencez par ajouter des contacts pour discuter avec eux</p>
+                    <button class="action-btn" onclick="switchTab('explorer')" style="margin-top: 20px;">
+                        <i class="fas fa-globe"></i> Découvrir des utilisateurs
+                    </button>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- SECTION EXPLORER - TOUS LES UTILISATEURS DE LA BASE DE DONNÉES -->
+    <div id="explorer-section" style="display: none;">
+        <div class="stats-card">
+            <div class="stat-item">
+                <div class="stat-value">{{ all_users|length if all_users else 0 }}</div>
+                <div class="stat-label">Utilisateurs inscrits</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">{{ online_users_count|default(0) }}</div>
+                <div class="stat-label">En ligne maintenant</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">{{ contacts|length if contacts else 0 }}</div>
+                <div class="stat-label">Mes contacts</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">{{ pending_invitations_count|default(0) }}</div>
+                <div class="stat-label">Invitations en attente</div>
+            </div>
+        </div>
+
+        <div class="filter-bar">
+            <select class="filter-select" id="languageFilter" onchange="filterExplorerUsers()">
+                <option value="all">🌐 Toutes les langues</option>
+                <option value="fr">🇫🇷 Français</option>
+                <option value="en">🇬🇧 English</option>
+                <option value="es">🇪🇸 Español</option>
+                <option value="de">🇩🇪 Deutsch</option>
+                <option value="it">🇮🇹 Italiano</option>
+                <option value="pt">🇵🇹 Português</option>
+                <option value="ar">🇸🇦 العربية</option>
+                <option value="zh">🇨🇳 中文</option>
+                <option value="ru">🇷🇺 Русский</option>
+            </select>
+            
+            <select class="filter-select" id="statusFilter" onchange="filterExplorerUsers()">
+                <option value="all">👥 Tous les statuts</option>
+                <option value="online">🟢 En ligne</option>
+                <option value="offline">🔴 Hors ligne</option>
+                <option value="recent">⏱️ Connectés aujourd'hui</option>
+            </select>
+            
+            <select class="filter-select" id="sortFilter" onchange="filterExplorerUsers()">
+                <option value="username">📝 Nom (A-Z)</option>
+                <option value="username_desc">📝 Nom (Z-A)</option>
+                <option value="recent">🕐 Plus récents</option>
+                <option value="oldest">🕐 Moins récents</option>
+                <option value="language">🔤 Par langue</option>
+            </select>
+        </div>
+
+        <div class="explorer-grid" id="explorerGrid">
+            {% if all_users %}
+                {% for user in all_users %}
+                <div class="explorer-card" 
+                     data-user-id="{{ user.id }}" 
+                     data-language="{{ user.language }}" 
+                     data-status="{{ 'online' if user.is_online else 'offline' }}"
+                     data-username="{{ user.username|lower }}"
+                     data-email="{{ user.email|lower }}"
+                     data-last-seen="{{ user.last_seen_timestamp|default(0) }}">
+                    
+                    {% if user.id in contact_ids %}
+                    <div class="member-badge">
+                        <i class="fas fa-check-circle"></i> Contact
+                    </div>
+                    {% elif user.id in pending_invitation_ids %}
+                    <div class="invitation-badge" style="background: #f39c12;">
+                        <i class="fas fa-hourglass-half"></i> Invitation envoyée
+                    </div>
+                    {% endif %}
+                    
+                    <div class="contact-header">
+                        <div class="contact-avatar">
+                            {% if user.profile_image %}
+                                <img src="{{ user.profile_image }}" alt="{{ user.username }}" class="profile-image">
+                            {% else %}
+                                {{ user.username[:1]|upper }}
+                            {% endif %}
+                        </div>
+                        <div class="contact-info">
+                            <div class="contact-name">{{ user.username }}</div>
+                            <div class="contact-status">
+                                {% if user.is_online %}
+                                <span class="online-dot"></span> En ligne
+                                {% else %}
+                                <span class="offline-dot"></span> Hors ligne
+                                <span class="last-seen">• {{ user.last_seen_formatted|default('Jamais connecté') }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contact-details">
+                        <div class="detail-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>{{ user.email }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-language"></i>
+                            <span class="language-badge">
+                                {% if user.language == 'fr' %}🇫🇷 Français
+                                {% elif user.language == 'en' %}🇬🇧 English
+                                {% elif user.language == 'es' %}🇪🇸 Español
+                                {% elif user.language == 'de' %}🇩🇪 Deutsch
+                                {% elif user.language == 'it' %}🇮🇹 Italiano
+                                {% elif user.language == 'pt' %}🇵🇹 Português
+                                {% elif user.language == 'ar' %}🇸🇦 العربية
+                                {% elif user.language == 'zh' %}🇨🇳 中文
+                                {% elif user.language == 'ru' %}🇷🇺 Русский
+                                {% else %}{{ user.language|upper }}
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Inscrit le {{ user.joined_date_formatted|default('date inconnue') }}</span>
+                        </div>
+                        {% if user.bio %}
+                        <div class="detail-item">
+                            <i class="fas fa-quote-right"></i>
+                            <span style="font-size: 13px; font-style: italic;">{{ user.bio|truncate(50) }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="contact-actions">
+                        {% if user.id in contact_ids %}
+                            <button class="contact-btn btn-message" onclick="sendMessageToContact({{ user.id }}, '{{ user.language }}')">
+                                <i class="fas fa-comment"></i> Message
+                            </button>
+                            <button class="contact-btn btn-profile" onclick="viewUserProfile({{ user.id }})">
+                                <i class="fas fa-user"></i> Profil
+                            </button>
+                        {% elif user.id in pending_invitation_ids %}
+                            <button class="contact-btn" onclick="resendUserInvitation({{ user.id }})" style="background: rgba(243, 156, 18, 0.1); color: #f39c12; border: 1px solid rgba(243, 156, 18, 0.3);">
+                                <i class="fas fa-paper-plane"></i> Relancer
+                            </button>
+                            <button class="contact-btn btn-remove" onclick="cancelUserInvitation({{ user.id }})">
+                                <i class="fas fa-times"></i> Annuler
+                            </button>
+                        {% else %}
+                            <button class="contact-btn btn-add" onclick="addContact({{ user.id }})">
+                                <i class="fas fa-user-plus"></i> Ajouter
+                            </button>
+                            <button class="contact-btn btn-profile" onclick="viewUserProfile({{ user.id }})">
+                                <i class="fas fa-user"></i> Profil
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-users">
+                    <i class="fas fa-users-slash"></i>
+                    <h3>Aucun autre utilisateur</h3>
+                    <p>Il n'y a pas encore d'autres utilisateurs inscrits sur l'application</p>
+                    <p style="color: #667eea; margin-top: 10px;">Invitez vos amis à rejoindre MISPA 7.0 !</p>
+                    <button class="action-btn" onclick="openNewContactModal()" style="margin-top: 20px;">
+                        <i class="fas fa-envelope"></i> Inviter par email
+                    </button>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Section Invitations envoyées -->
+    <div id="invitations-section" style="display: none;">
+        <div class="invitations-grid" id="invitationsGrid">
+            {% if invitations %}
+                {% for invitation in invitations %}
+                <div class="invitation-card" data-invitation-id="{{ invitation.id }}">
+                    <div class="invitation-badge">
+                        <i class="fas fa-hourglass-half"></i> En attente
+                    </div>
+                    
+                    <div class="contact-header">
+                        <div class="contact-avatar" style="background: linear-gradient(135deg, #f39c12, #e67e22);">
+                            {{ invitation.recipient_name[:1]|upper if invitation.recipient_name else '?' }}
+                        </div>
+                        <div class="contact-info">
+                            <div class="contact-name">{{ invitation.recipient_name or 'Invitation en attente' }}</div>
+                            <div class="contact-status">
+                                <span style="color: #f39c12;">Envoyée le {{ invitation.sent_date }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="invitation-message">
+                        <i class="fas fa-envelope" style="margin-right: 10px;"></i>
+                        {{ invitation.message or 'Invitation à rejoindre MISPA 7.0' }}
+                    </div>
+
+                    <div class="contact-details">
+                        <div class="detail-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>{{ invitation.recipient_email }}</span>
+                        </div>
+                        {% if invitation.language %}
+                        <div class="detail-item">
+                            <i class="fas fa-language"></i>
+                            <span class="language-badge">{{ config.SUPPORTED_LANGUAGES.get(invitation.language, 'Français') }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="contact-actions">
+                        <button class="contact-btn btn-message" onclick="resendEmailInvitation({{ invitation.id }})">
+                            <i class="fas fa-paper-plane"></i> Relancer
+                        </button>
+                        <button class="contact-btn btn-remove" onclick="cancelEmailInvitation({{ invitation.id }})">
+                            <i class="fas fa-times"></i> Annuler
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-invitations">
+                    <i class="fas fa-paper-plane"></i>
+                    <h3>Aucune invitation envoyée</h3>
+                    <p>Les invitations que vous envoyez apparaîtront ici</p>
+                    <button class="action-btn" onclick="openNewContactModal()" style="margin-top: 20px;">
+                        <i class="fas fa-user-plus"></i> Inviter un contact
+                    </button>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Section Groupes -->
     {% if groups %}
     <div class="groups-section">
         <h2 class="section-title">
@@ -482,16 +931,41 @@
         </div>
         <div class="modal-body">
             <div class="form-group">
-                <label class="form-label">Rechercher un utilisateur</label>
+                <label class="form-label">Rechercher un utilisateur existant</label>
                 <input type="text" class="form-control" id="userSearch" placeholder="Nom d'utilisateur ou email">
-                <div id="searchResults" style="margin-top: 15px;"></div>
+                <div id="searchResults" style="margin-top: 15px; max-height: 300px; overflow-y: auto;"></div>
+            </div>
+            
+            <div style="text-align: center; margin: 20px 0; color: #a0a0c0;">
+                <i class="fas fa-minus"></i> OU <i class="fas fa-minus"></i>
             </div>
             
             <div class="form-group">
-                <label class="form-label">Ou inviter par email</label>
+                <label class="form-label">Inviter par email</label>
                 <input type="email" class="form-control" id="inviteEmail" placeholder="email@exemple.com">
-                <button class="btn btn-secondary" onclick="sendInvitation()" style="margin-top: 10px;">
-                    <i class="fas fa-paper-plane"></i> Envoyer une invitation
+                
+                <div style="margin-top: 15px;">
+                    <label class="form-label">Langue de l'invitation</label>
+                    <select class="form-control" id="invitationLanguage">
+                        <option value="fr">Français</option>
+                        <option value="en">English</option>
+                        <option value="es">Español</option>
+                        <option value="de">Deutsch</option>
+                        <option value="it">Italiano</option>
+                        <option value="pt">Português</option>
+                        <option value="ar">العربية</option>
+                        <option value="zh">中文</option>
+                        <option value="ru">Русский</option>
+                    </select>
+                </div>
+                
+                <div style="margin-top: 15px;">
+                    <label class="form-label">Message personnalisé (optionnel)</label>
+                    <textarea class="form-control" id="invitationMessage" rows="2" placeholder="Je souhaite vous ajouter à mes contacts sur MISPA 7.0..."></textarea>
+                </div>
+                
+                <button class="btn btn-secondary" onclick="sendInvitation()" style="margin-top: 20px; width: 100%;">
+                    <i class="fas fa-paper-plane"></i> Envoyer l'invitation
                 </button>
             </div>
         </div>
@@ -518,11 +992,12 @@
             
             <div class="form-group">
                 <label class="form-label">Ajouter des membres</label>
-                <div id="groupMembers" style="margin-top: 10px;">
-                    {% for user in users if user.is_contact %}
-                    <div class="group-member-option" data-user-id="{{ user.id }}">
-                        <input type="checkbox" id="member_{{ user.id }}">
-                        <label for="member_{{ user.id }}">{{ user.username }}</label>
+                <div id="groupMembers" style="margin-top: 10px; max-height: 300px; overflow-y: auto;">
+                    {% for contact in contacts %}
+                    <div class="group-member-option" data-user-id="{{ contact.id }}">
+                        <input type="checkbox" id="member_{{ contact.id }}">
+                        <label for="member_{{ contact.id }}">{{ contact.username }}</label>
+                        <span class="language-badge" style="margin-left: auto;">{{ config.SUPPORTED_LANGUAGES.get(contact.language, 'Français') }}</span>
                     </div>
                     {% endfor %}
                 </div>
@@ -531,6 +1006,51 @@
             <button class="btn btn-primary" onclick="createGroup()" style="width: 100%; margin-top: 20px;">
                 <i class="fas fa-plus"></i> Créer le groupe
             </button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de message -->
+<div id="messageModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="messageModalTitle">Envoyer un message</h3>
+            <button class="modal-close" onclick="closeMessageModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="messageLanguageInfo" class="detail-item" style="margin-bottom: 15px;">
+                <i class="fas fa-language"></i>
+                <span id="targetLanguageDisplay">Langue du destinataire: </span>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Votre message</label>
+                <textarea class="form-control" id="messageContent" rows="4" placeholder="Écrivez votre message..."></textarea>
+            </div>
+            
+            <div id="translatedPreview" style="margin-top: 15px; padding: 15px; background: rgba(102, 126, 234, 0.1); border-radius: 8px; display: none;">
+                <div style="color: #667eea; margin-bottom: 5px;">
+                    <i class="fas fa-language"></i> Traduction:
+                </div>
+                <div id="translatedText" style="color: white;"></div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="sendTranslatedMessage()" style="width: 100%; margin-top: 20px;">
+                <i class="fas fa-paper-plane"></i> Envoyer
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de profil utilisateur -->
+<div id="profileModal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 600px;">
+        <div class="modal-header">
+            <h3>Profil utilisateur</h3>
+            <button class="modal-close" onclick="closeProfileModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="profileModalBody">
+            <!-- Le contenu sera chargé dynamiquement -->
         </div>
     </div>
 </div>
@@ -556,6 +1076,8 @@
     max-width: 500px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(20px);
+    max-height: 80vh;
+    overflow-y: auto;
 }
 
 .modal-header {
@@ -613,56 +1135,450 @@
     cursor: pointer;
     flex: 1;
 }
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.form-label {
+    color: white;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.btn-primary:hover, .btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(102, 126, 234, 0.5);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 126, 234, 0.8);
+}
 </style>
 
 <script>
+let currentUserId = null;
+let currentUserLanguage = 'fr';
+let notificationSocket = null;
+let explorerUsers = [];
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Recherche en temps réel
-    const searchInput = document.getElementById('searchInput');
-    const contactsGrid = document.getElementById('contactsGrid');
+    console.log('Page contacts chargée');
     
-    searchInput.addEventListener('input', function() {
-        const searchTerm = this.value.toLowerCase();
-        const contactCards = contactsGrid.querySelectorAll('.contact-card');
-        
-        contactCards.forEach(card => {
-            const userName = card.querySelector('.contact-name').textContent.toLowerCase();
-            const userEmail = card.querySelector('.detail-item:nth-child(1) span').textContent.toLowerCase();
+    // Initialiser les compteurs
+    updateCounts();
+    
+    // Recherche globale
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
             
-            if (userName.includes(searchTerm) || userEmail.includes(searchTerm)) {
-                card.style.display = 'block';
-            } else {
-                card.style.display = 'none';
+            // Vérifier quel onglet est actif
+            const activeTab = document.querySelector('.tab.active');
+            if (activeTab && activeTab.id === 'tab-contacts') {
+                filterContacts(searchTerm);
+            } else if (activeTab && activeTab.id === 'tab-explorer') {
+                filterExplorer(searchTerm);
             }
         });
-    });
+    }
     
-    // Recherche avancée
-    document.getElementById('searchBtn').addEventListener('click', function() {
-        const searchTerm = searchInput.value.trim();
-        if (searchTerm) {
-            // Ici, vous pourriez faire une recherche plus avancée via AJAX
-            console.log('Recherche avancée pour:', searchTerm);
-        }
-    });
+    // Initialiser les utilisateurs explorer
+    initExplorerUsers();
+    
+    // Initialiser WebSocket
+    initializeNotifications();
 });
 
-function startChat(userId) {
-    window.location.href = `/chat?contact=${userId}`;
+function initExplorerUsers() {
+    // Récupérer tous les utilisateurs de la grille explorer
+    const explorerCards = document.querySelectorAll('#explorerGrid .explorer-card');
+    explorerUsers = Array.from(explorerCards).map(card => ({
+        element: card,
+        id: card.dataset.userId,
+        language: card.dataset.language,
+        status: card.dataset.status,
+        username: card.dataset.username,
+        email: card.dataset.email,
+        lastSeen: parseInt(card.dataset.lastSeen) || 0
+    }));
+    
+    console.log(`${explorerUsers.length} utilisateurs chargés dans Explorer`);
+}
+
+function initializeNotifications() {
+    try {
+        notificationSocket = new WebSocket(`ws://${window.location.host}/ws/notifications`);
+        
+        notificationSocket.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            
+            if (data.type === 'invitation_accepted') {
+                showNotification(`🎉 ${data.username} a accepté votre invitation !`, 'success');
+                updateContactsList();
+                updateInvitationsCount();
+            } else if (data.type === 'message_received') {
+                showNotification(`💬 Nouveau message de ${data.username}`, 'info');
+            } else if (data.type === 'user_online') {
+                updateUserStatus(data.user_id, true, 'En ligne');
+            } else if (data.type === 'user_offline') {
+                updateUserStatus(data.user_id, false, data.last_seen || 'Hors ligne');
+            }
+        };
+    } catch (error) {
+        console.error('Erreur WebSocket:', error);
+    }
+}
+
+function switchTab(tabName) {
+    console.log(`Changement d'onglet vers: ${tabName}`);
+    
+    // Mettre à jour les tabs
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    document.getElementById(`tab-${tabName}`).classList.add('active');
+    
+    // Cacher toutes les sections
+    document.getElementById('contacts-section').style.display = 'none';
+    document.getElementById('explorer-section').style.display = 'none';
+    document.getElementById('invitations-section').style.display = 'none';
+    
+    // Afficher la section correspondante
+    if (tabName === 'contacts') {
+        document.getElementById('contacts-section').style.display = 'block';
+    } else if (tabName === 'explorer') {
+        document.getElementById('explorer-section').style.display = 'block';
+        // Réinitialiser les filtres
+        resetExplorerFilters();
+    } else if (tabName === 'invitations') {
+        document.getElementById('invitations-section').style.display = 'block';
+    }
+}
+
+function resetExplorerFilters() {
+    const languageFilter = document.getElementById('languageFilter');
+    const statusFilter = document.getElementById('statusFilter');
+    const sortFilter = document.getElementById('sortFilter');
+    
+    if (languageFilter) languageFilter.value = 'all';
+    if (statusFilter) statusFilter.value = 'all';
+    if (sortFilter) sortFilter.value = 'username';
+    
+    filterExplorerUsers();
+}
+
+function filterExplorer(searchTerm) {
+    const explorerCards = document.querySelectorAll('#explorerGrid .explorer-card');
+    
+    explorerCards.forEach(card => {
+        const userName = card.querySelector('.contact-name').textContent.toLowerCase();
+        const userEmail = card.querySelector('.detail-item:first-child span').textContent.toLowerCase();
+        
+        if (userName.includes(searchTerm) || userEmail.includes(searchTerm)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+
+function filterContacts(searchTerm) {
+    const contactCards = document.querySelectorAll('#contactsGrid .contact-card');
+    
+    contactCards.forEach(card => {
+        const userName = card.querySelector('.contact-name').textContent.toLowerCase();
+        const userEmail = card.querySelector('.detail-item:first-child span').textContent.toLowerCase();
+        
+        if (userName.includes(searchTerm) || userEmail.includes(searchTerm)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+
+function filterExplorerUsers() {
+    const languageFilter = document.getElementById('languageFilter').value;
+    const statusFilter = document.getElementById('statusFilter').value;
+    const sortFilter = document.getElementById('sortFilter').value;
+    
+    let visibleUsers = [];
+    const today = new Date().setHours(0, 0, 0, 0);
+    
+    explorerUsers.forEach(user => {
+        let show = true;
+        
+        if (languageFilter !== 'all' && user.language !== languageFilter) {
+            show = false;
+        }
+        
+        if (statusFilter !== 'all') {
+            if (statusFilter === 'online' && user.status !== 'online') {
+                show = false;
+            } else if (statusFilter === 'offline' && user.status !== 'offline') {
+                show = false;
+            } else if (statusFilter === 'recent') {
+                if (user.lastSeen < today) {
+                    show = false;
+                }
+            }
+        }
+        
+        user.element.style.display = show ? 'block' : 'none';
+        if (show) visibleUsers.push(user);
+    });
+    
+    // Tri
+    if (sortFilter === 'username') {
+        visibleUsers.sort((a, b) => a.username.localeCompare(b.username));
+    } else if (sortFilter === 'username_desc') {
+        visibleUsers.sort((a, b) => b.username.localeCompare(a.username));
+    } else if (sortFilter === 'recent') {
+        visibleUsers.sort((a, b) => b.lastSeen - a.lastSeen);
+    } else if (sortFilter === 'oldest') {
+        visibleUsers.sort((a, b) => a.lastSeen - b.lastSeen);
+    } else if (sortFilter === 'language') {
+        visibleUsers.sort((a, b) => a.language.localeCompare(b.language));
+    }
+    
+    const explorerGrid = document.getElementById('explorerGrid');
+    visibleUsers.forEach(user => {
+        explorerGrid.appendChild(user.element);
+    });
+    
+    showNotification(`${visibleUsers.length} utilisateur(s) trouvé(s)`, 'info');
+}
+
+function updateUserStatus(userId, isOnline, statusText) {
+    const cards = document.querySelectorAll(`[data-user-id="${userId}"]`);
+    
+    cards.forEach(card => {
+        const statusDiv = card.querySelector('.contact-status');
+        if (statusDiv) {
+            if (isOnline) {
+                statusDiv.innerHTML = '<span class="online-dot"></span> En ligne';
+                card.dataset.status = 'online';
+            } else {
+                statusDiv.innerHTML = `<span class="offline-dot"></span> Hors ligne <span class="last-seen">• ${statusText || 'Dernière connexion récente'}</span>`;
+                card.dataset.status = 'offline';
+            }
+        }
+    });
+}
+
+function viewUserProfile(userId) {
+    fetch(`/api/user_profile/${userId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const modalBody = document.getElementById('profileModalBody');
+                const user = data.user;
+                
+                modalBody.innerHTML = `
+                    <div style="text-align: center; margin-bottom: 30px;">
+                        <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+                            <div style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden; border: 3px solid #667eea;">
+                                ${user.profile_image ? 
+                                    `<img src="${user.profile_image}" style="width: 100%; height: 100%; object-fit: cover;">` :
+                                    `<div style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-size: 36px; color: white;">
+                                        ${user.username[0].toUpperCase()}
+                                    </div>`
+                                }
+                            </div>
+                        </div>
+                        <h2 style="color: white; margin-bottom: 5px;">${user.username}</h2>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px;">
+                            <span class="${user.is_online ? 'online-dot' : 'offline-dot'}" style="width: 12px; height: 12px;"></span>
+                            <span style="color: ${user.is_online ? '#2ecc71' : '#e74c3c'};">
+                                ${user.is_online ? 'En ligne' : user.last_seen ? `Hors ligne • ${user.last_seen}` : 'Jamais connecté'}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; gap: 15px;">
+                        <div class="detail-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>${user.email}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-language"></i>
+                            <span class="language-badge">${getLanguageName(user.language)}</span>
+                        </div>
+                        ${user.bio ? `
+                        <div class="detail-item" style="align-items: flex-start;">
+                            <i class="fas fa-quote-right"></i>
+                            <span style="font-style: italic;">${user.bio}</span>
+                        </div>
+                        ` : ''}
+                        <div class="detail-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Membre depuis ${user.joined_date || 'récemment'}</span>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; margin-top: 30px;">
+                        <button class="contact-btn btn-message" onclick="sendMessageToContact(${user.id}, '${user.language}'); closeProfileModal();" style="flex: 1;">
+                            <i class="fas fa-comment"></i> Envoyer un message
+                        </button>
+                        ${user.is_contact ? 
+                            `<button class="contact-btn btn-remove" onclick="removeContact(${user.id}); closeProfileModal();" style="flex: 1;">
+                                <i class="fas fa-user-minus"></i> Retirer
+                            </button>` :
+                            `<button class="contact-btn btn-add" onclick="addContact(${user.id}); closeProfileModal();" style="flex: 1;">
+                                <i class="fas fa-user-plus"></i> Ajouter
+                            </button>`
+                        }
+                    </div>
+                `;
+                
+                document.getElementById('profileModal').style.display = 'flex';
+            }
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            alert('Erreur lors du chargement du profil');
+        });
+}
+
+function closeProfileModal() {
+    document.getElementById('profileModal').style.display = 'none';
+}
+
+function sendMessageToContact(userId, language) {
+    currentUserId = userId;
+    currentUserLanguage = language || 'fr';
+    
+    const languageNames = {
+        'fr': 'Français', 'en': 'English', 'es': 'Español', 'de': 'Deutsch',
+        'it': 'Italiano', 'pt': 'Português', 'ar': 'العربية', 'zh': '中文', 'ru': 'Русский'
+    };
+    
+    document.getElementById('targetLanguageDisplay').innerHTML = 
+        `<i class="fas fa-language"></i> Message sera traduit en: ${languageNames[currentUserLanguage] || currentUserLanguage}`;
+    
+    document.getElementById('messageModal').style.display = 'flex';
+    document.getElementById('messageContent').value = '';
+    document.getElementById('translatedPreview').style.display = 'none';
+}
+
+function closeMessageModal() {
+    document.getElementById('messageModal').style.display = 'none';
+}
+
+async function sendTranslatedMessage() {
+    const message = document.getElementById('messageContent').value;
+    
+    if (!message.trim()) {
+        alert('Veuillez écrire un message');
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/send_translated_message', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                recipient_id: currentUserId,
+                message: message,
+                target_language: currentUserLanguage
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            showNotification('✅ Message envoyé avec succès !', 'success');
+            closeMessageModal();
+        } else {
+            alert('Erreur: ' + (data.error || 'Impossible d\'envoyer le message'));
+        }
+    } catch (error) {
+        console.error('Erreur:', error);
+        alert('Erreur lors de l\'envoi du message');
+    }
 }
 
 function addContact(userId) {
     fetch(`/add_contact/${userId}`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        }
+        headers: {'Content-Type': 'application/json'}
     })
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            alert('Contact ajouté avec succès !');
-            location.reload();
+            showNotification('✅ Invitation envoyée avec succès !', 'success');
+            closeNewContactModal();
+            updateInvitationsCount();
+            
+            const explorerCard = document.querySelector(`.explorer-card[data-user-id="${userId}"]`);
+            if (explorerCard) {
+                const oldBadge = explorerCard.querySelector('.member-badge, .invitation-badge');
+                if (oldBadge) oldBadge.remove();
+                
+                const badge = document.createElement('div');
+                badge.className = 'invitation-badge';
+                badge.style.background = '#f39c12';
+                badge.innerHTML = '<i class="fas fa-hourglass-half"></i> Invitation envoyée';
+                explorerCard.appendChild(badge);
+                
+                const actions = explorerCard.querySelector('.contact-actions');
+                if (actions) {
+                    actions.innerHTML = `
+                        <button class="contact-btn" onclick="resendUserInvitation(${userId})" style="background: rgba(243, 156, 18, 0.1); color: #f39c12; border: 1px solid rgba(243, 156, 18, 0.3);">
+                            <i class="fas fa-paper-plane"></i> Relancer
+                        </button>
+                        <button class="contact-btn btn-remove" onclick="cancelUserInvitation(${userId})">
+                            <i class="fas fa-times"></i> Annuler
+                        </button>
+                    `;
+                }
+            }
         } else {
             alert('Erreur: ' + (data.error || 'Impossible d\'ajouter le contact'));
         }
@@ -675,14 +1591,33 @@ function addContact(userId) {
 
 function removeContact(userId) {
     if (confirm('Êtes-vous sûr de vouloir retirer ce contact ?')) {
-        fetch(`/remove_contact/${userId}`, {
-            method: 'POST'
-        })
+        fetch(`/remove_contact/${userId}`, {method: 'POST'})
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('Contact retiré avec succès');
-                location.reload();
+                showNotification('✅ Contact retiré avec succès', 'success');
+                
+                const contactCard = document.querySelector(`.contact-card[data-user-id="${userId}"]`);
+                if (contactCard) contactCard.remove();
+                
+                const explorerCard = document.querySelector(`.explorer-card[data-user-id="${userId}"]`);
+                if (explorerCard) {
+                    const badge = explorerCard.querySelector('.member-badge');
+                    if (badge) badge.remove();
+                    
+                    const actions = explorerCard.querySelector('.contact-actions');
+                    if (actions) {
+                        actions.innerHTML = `
+                            <button class="contact-btn btn-add" onclick="addContact(${userId})">
+                                <i class="fas fa-user-plus"></i> Ajouter
+                            </button>
+                            <button class="contact-btn btn-profile" onclick="viewUserProfile(${userId})">
+                                <i class="fas fa-user"></i> Profil
+                            </button>
+                        `;
+                    }
+                }
+                updateCounts();
             }
         })
         .catch(error => {
@@ -692,17 +1627,135 @@ function removeContact(userId) {
     }
 }
 
+function resendUserInvitation(userId) {
+    fetch(`/resend_invitation/${userId}`, {method: 'POST'})
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) showNotification('✅ Invitation relancée !', 'success');
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+        alert('Erreur lors du renvoi');
+    });
+}
+
+function cancelUserInvitation(userId) {
+    if (confirm('Annuler cette invitation ?')) {
+        fetch(`/cancel_invitation/${userId}`, {method: 'POST'})
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('✅ Invitation annulée', 'success');
+                
+                const explorerCard = document.querySelector(`.explorer-card[data-user-id="${userId}"]`);
+                if (explorerCard) {
+                    const badge = explorerCard.querySelector('.invitation-badge');
+                    if (badge) badge.remove();
+                    
+                    const actions = explorerCard.querySelector('.contact-actions');
+                    if (actions) {
+                        actions.innerHTML = `
+                            <button class="contact-btn btn-add" onclick="addContact(${userId})">
+                                <i class="fas fa-user-plus"></i> Ajouter
+                            </button>
+                            <button class="contact-btn btn-profile" onclick="viewUserProfile(${userId})">
+                                <i class="fas fa-user"></i> Profil
+                            </button>
+                        `;
+                    }
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            alert('Erreur lors de l\'annulation');
+        });
+    }
+}
+
+function resendEmailInvitation(invitationId) {
+    fetch(`/resend_invitation/${invitationId}`, {method: 'POST'})
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) showNotification('✅ Invitation relancée !', 'success');
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+        alert('Erreur lors du renvoi');
+    });
+}
+
+function cancelEmailInvitation(invitationId) {
+    if (confirm('Annuler cette invitation ?')) {
+        fetch(`/cancel_invitation/${invitationId}`, {method: 'POST'})
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const card = document.querySelector(`.invitation-card[data-invitation-id="${invitationId}"]`);
+                if (card) {
+                    card.remove();
+                    showNotification('✅ Invitation annulée', 'success');
+                    updateInvitationsCount();
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            alert('Erreur lors de l\'annulation');
+        });
+    }
+}
+
+function getLanguageName(code) {
+    const languages = {
+        'fr': 'Français', 'en': 'English', 'es': 'Español', 'de': 'Deutsch',
+        'it': 'Italiano', 'pt': 'Português', 'ar': 'العربية', 'zh': '中文', 'ru': 'Русский'
+    };
+    return languages[code] || code;
+}
+
+function showNotification(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = 'notification-toast';
+    let icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+    toast.innerHTML = `${icon} ${message}`;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+}
+
+function updateCounts() {
+    const contactsCount = document.querySelectorAll('#contactsGrid .contact-card').length;
+    const contactsBadge = document.getElementById('contacts-count');
+    if (contactsBadge) {
+        contactsBadge.textContent = contactsCount;
+        contactsBadge.style.display = contactsCount > 0 ? 'inline' : 'none';
+    }
+    updateInvitationsCount();
+}
+
+function updateInvitationsCount() {
+    const invitations = document.querySelectorAll('.invitation-card').length;
+    const badge = document.getElementById('invitations-count');
+    if (badge) {
+        badge.textContent = invitations;
+        badge.style.display = invitations > 0 ? 'inline' : 'none';
+    }
+}
+
 function openGroupChat(groupId) {
     window.location.href = `/chat?group=${groupId}`;
 }
 
-// Modal functions
 function openNewContactModal() {
     document.getElementById('newContactModal').style.display = 'flex';
 }
 
 function closeNewContactModal() {
     document.getElementById('newContactModal').style.display = 'none';
+    document.getElementById('userSearch').value = '';
+    document.getElementById('searchResults').innerHTML = '';
+    document.getElementById('inviteEmail').value = '';
+    document.getElementById('invitationMessage').value = '';
 }
 
 function openNewGroupModal() {
@@ -711,9 +1764,11 @@ function openNewGroupModal() {
 
 function closeNewGroupModal() {
     document.getElementById('newGroupModal').style.display = 'none';
+    document.getElementById('groupName').value = '';
+    document.getElementById('groupDescription').value = '';
+    document.querySelectorAll('#groupMembers input[type="checkbox"]').forEach(cb => cb.checked = false);
 }
 
-// Recherche d'utilisateurs dans le modal
 document.getElementById('userSearch')?.addEventListener('input', async function() {
     const searchTerm = this.value.trim();
     const resultsDiv = document.getElementById('searchResults');
@@ -726,7 +1781,6 @@ document.getElementById('userSearch')?.addEventListener('input', async function(
     try {
         const response = await fetch(`/api/search_users?q=${encodeURIComponent(searchTerm)}`);
         const data = await response.json();
-        
         resultsDiv.innerHTML = '';
         
         if (data.users.length === 0) {
@@ -738,13 +1792,22 @@ document.getElementById('userSearch')?.addEventListener('input', async function(
             const userDiv = document.createElement('div');
             userDiv.className = 'group-member-option';
             userDiv.innerHTML = `
-                <div style="flex: 1;">
-                    <div style="color: white; font-weight: 500;">${user.username}</div>
-                    <div style="color: #a0a0c0; font-size: 12px;">${user.email}</div>
+                <div style="display: flex; align-items: center; gap: 10px; flex: 1;">
+                    <div style="width: 40px; height: 40px; border-radius: 50%; overflow: hidden; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                        ${user.profile_image ? 
+                            `<img src="${user.profile_image}" style="width: 100%; height: 100%; object-fit: cover;">` :
+                            user.username[0].toUpperCase()
+                        }
+                    </div>
+                    <div>
+                        <div style="color: white; font-weight: 500;">${user.username}</div>
+                        <div style="color: #a0a0c0; font-size: 12px;">${user.email}</div>
+                    </div>
                 </div>
+                <span class="language-badge">${getLanguageName(user.language)}</span>
                 ${user.is_contact ? 
-                    '<span style="color: #2ecc71; font-size: 12px;">Déjà contact</span>' : 
-                    `<button class="btn btn-sm btn-secondary" onclick="addContactFromModal(${user.id})">
+                    '<span style="color: #2ecc71; font-size: 12px; margin-left: 10px;">✓ Contact</span>' : 
+                    `<button class="btn btn-secondary" onclick="addContact(${user.id}); closeNewContactModal();" style="padding: 5px 10px; margin-left: 10px;">
                         <i class="fas fa-user-plus"></i> Ajouter
                     </button>`
                 }
@@ -757,21 +1820,38 @@ document.getElementById('userSearch')?.addEventListener('input', async function(
     }
 });
 
-function addContactFromModal(userId) {
-    addContact(userId);
-    closeNewContactModal();
-}
-
 function sendInvitation() {
     const email = document.getElementById('inviteEmail').value;
+    const language = document.getElementById('invitationLanguage').value;
+    const message = document.getElementById('invitationMessage').value || 'Je souhaite vous ajouter à mes contacts sur MISPA 7.0';
+    
     if (!email || !email.includes('@')) {
         alert('Veuillez entrer une adresse email valide');
         return;
     }
     
-    alert(`Invitation envoyée à ${email}`);
-    document.getElementById('inviteEmail').value = '';
-    closeNewContactModal();
+    fetch('/api/send_invitation', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({email, language, message})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification(`📧 Invitation envoyée à ${email}`, 'success');
+            document.getElementById('inviteEmail').value = '';
+            document.getElementById('invitationMessage').value = '';
+            closeNewContactModal();
+            updateInvitationsCount();
+            switchTab('invitations');
+        } else {
+            alert('Erreur: ' + (data.error || 'Impossible d\'envoyer l\'invitation'));
+        }
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+        alert('Erreur lors de l\'envoi');
+    });
 }
 
 function createGroup() {
@@ -783,25 +1863,18 @@ function createGroup() {
         return;
     }
     
-    // Récupérer les membres sélectionnés
     const memberCheckboxes = document.querySelectorAll('#groupMembers input[type="checkbox"]:checked');
     const memberIds = Array.from(memberCheckboxes).map(cb => parseInt(cb.id.replace('member_', '')));
     
     fetch('/api/create_group', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            name: name,
-            description: description,
-            member_ids: memberIds
-        })
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({name, description, member_ids: memberIds})
     })
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            alert(`Groupe "${name}" créé avec succès !`);
+            showNotification(`✅ Groupe "${name}" créé !`, 'success');
             closeNewGroupModal();
             location.reload();
         } else {
@@ -812,6 +1885,10 @@ function createGroup() {
         console.error('Erreur:', error);
         alert('Erreur lors de la création du groupe');
     });
+}
+
+function updateContactsList() {
+    location.reload();
 }
 </script>
 {% endblock %}
