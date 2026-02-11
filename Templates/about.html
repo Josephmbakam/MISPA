@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>À propos - MISPA 7.0</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Styles communs avec la page d'accueil */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #0a0e17;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .about-nav {
+            background: rgba(10, 14, 23, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 40px;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .about-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+
+        .about-logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .about-logo-text {
+            color: white;
+        }
+
+        .about-logo-text h1 {
+            font-size: 24px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .about-logo-text p {
+            font-size: 12px;
+            color: #a0a0c0;
+        }
+
+        .back-home {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 10px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .back-home:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .about-hero {
+            padding: 80px 40px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.05) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .about-hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .about-hero p {
+            font-size: 20px;
+            color: #b0b0d0;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+
+        .verse-highlight {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 600px;
+            margin: 40px auto;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .verse-highlight::before {
+            content: '✨';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-size: 60px;
+            opacity: 0.1;
+        }
+
+        .verse-highlight p {
+            font-style: italic;
+            font-size: 18px;
+            color: #ffffff;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .verse-reference {
+            color: #667eea;
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        /* Timeline Section */
+        .timeline-section {
+            padding: 80px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            color: #ffffff;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .section-title h2 i {
+            color: #667eea;
+        }
+
+        .section-title p {
+            color: #a0a0c0;
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-date {
+            flex: 1;
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .timeline-date span {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 18px;
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .timeline-content {
+            flex: 2;
+            background: rgba(30, 35, 50, 0.7);
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            width: 20px;
+            height: 20px;
+            background: #667eea;
+            border-radius: 50%;
+            transform: translateY(-50%);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content::before {
+            left: -10px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content::before {
+            right: -10px;
+        }
+
+        .timeline-content h3 {
+            color: #ffffff;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .timeline-content p {
+            color: #a0a0c0;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        /* Team Section */
+        .team-section {
+            padding: 80px 40px;
+            background: rgba(10, 14, 23, 0.8);
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 40px auto 0;
+        }
+
+        .team-card {
+            background: rgba(30, 35, 50, 0.7);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .team-card:hover {
+            transform: translateY(-10px);
+            border-color: #667eea;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .member-avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 40px;
+            color: white;
+        }
+
+        .omni-avatar {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .team-card h4 {
+            font-size: 22px;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .member-role {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .member-bio {
+            color: #a0a0c0;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* Values Section */
+        .values-section {
+            padding: 80px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .value-card {
+            background: rgba(30, 35, 50, 0.7);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+        }
+
+        .value-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 30px;
+            color: white;
+        }
+
+        .value-card h3 {
+            font-size: 20px;
+            color: #ffffff;
+            margin-bottom: 15px;
+        }
+
+        .value-card p {
+            color: #a0a0c0;
+            line-height: 1.6;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            padding: 80px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            opacity: 0.1;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            max-width: 1000px;
+            margin: 40px auto 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 10px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .stat-label {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 80px 40px;
+            text-align: center;
+            background: rgba(10, 14, 23, 0.9);
+        }
+
+        .cta-section h2 {
+            font-size: 36px;
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        .cta-section p {
+            font-size: 18px;
+            color: #a0a0c0;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .cta-btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .cta-btn-secondary {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 30px;
+            }
+
+            .timeline-item {
+                flex-direction: row !important;
+            }
+
+            .timeline-date {
+                flex: 0 0 100px;
+                padding: 0 15px 0 0;
+            }
+
+            .timeline-content {
+                flex: 1;
+            }
+
+            .timeline-content::before {
+                left: -10px !important;
+                right: auto !important;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .cta-btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="about-nav">
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="about-logo">
+                <div class="about-logo-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <div class="about-logo-text">
+                    <h1>MISPA 7.0</h1>
+                    <p>À propos de nous</p>
+                </div>
+            </a>
+            <a href="{{ url_for('index') }}" class="back-home">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <h1>Notre Mission</h1>
+        <p>Briser les barrières linguistiques pour une communication mondiale sans frontières</p>
+        
+        <div class="verse-highlight">
+            <p>"Car Dieu a tant aimé le monde qu'il a donné son Fils unique, afin que quiconque croit en lui ne périsse point, mais qu'il ait la vie éternelle."</p>
+            <p class="verse-reference">- Jean 3:16</p>
+        </div>
+        
+        <p>Nous croyons que chaque personne mérite de communiquer librement, quelle que soit sa langue natale.</p>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="timeline-section">
+        <div class="section-title">
+            <h2><i class="fas fa-history"></i> Notre Histoire</h2>
+            <p>De l'idée à la révolution de la communication</p>
+        </div>
+        
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-date">
+                    <span>2023</span>
+                </div>
+                <div class="timeline-content">
+                    <h3>Naissance de l'idée</h3>
+                    <p>L'idée de MISPA est née du constat que les barrières linguistiques empêchent les gens de communiquer efficacement à travers le monde. Nous avons décidé de créer une solution qui rendrait la communication universellement accessible.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-date">
+                    <span>2024</span>
+                </div>
+                <div class="timeline-content">
+                    <h3>Développement MBAJO 7.0</h3>
+                    <p>Développement de la technologie de traduction instantanée et création de l'assistant IA Omni7.0. Après des mois de recherche et de développement, nous avons créé un système de traduction qui conserve le contexte et les émotions.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-date">
+                    <span>2025</span>
+                </div>
+                <div class="timeline-content">
+                    <h3>Lancement de MISPA</h3>
+                    <p>Lancement officiel de l'application avec 20 langues supportées et des fonctionnalités de sécurité avancées. En moins de 6 mois, nous avons connecté des milliers de personnes à travers le monde.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <div class="section-title">
+            <h2><i class="fas fa-users"></i> Notre Équipe</h2>
+            <p>Une équipe passionnée dédiée à la révolution de la communication</p>
+        </div>
+        
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="member-avatar">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <h4>Pr. Charly Eyong</h4>
+                <p class="member-role">Fondateur & CEO</p>
+                <p class="member-bio">Visionnaire derrière la technologie MBAJO 7.0. PhD en Intelligence Artificielle avec 15 ans d'expérience en traitement du langage naturel.</p>
+            </div>
+            
+            <div class="team-card">
+                <div class="member-avatar">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h4>Caleb Ewane</h4>
+                <p class="member-role">Lead Développeur</p>
+                <p class="member-bio">Architecte du système de traduction. Expert en machine learning et développement d'API à grande échelle.</p>
+            </div>
+            
+            <div class="team-card">
+                <div class="member-avatar">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h4>Daniele Obatteba</h4>
+                <p class="member-role">Responsable Sécurité</p>
+                <p class="member-bio">Expert en cryptographie et protection des données. Ancien responsable sécurité chez plusieurs entreprises du Fortune 500.</p>
+            </div>
+            
+            <div class="team-card">
+                <div class="member-avatar omni-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h4>Omni7.0</h4>
+                <p class="member-role">Assistant IA</p>
+                <p class="member-bio">Notre intelligence artificielle dédiée à votre service. Toujours disponible pour vous aider 24h/24, 7j/7.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="values-section">
+        <div class="section-title">
+            <h2><i class="fas fa-heart"></i> Nos Valeurs</h2>
+            <p>Les principes qui guident chaque décision que nous prenons</p>
+        </div>
+        
+        <div class="values-grid">
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-language"></i>
+                </div>
+                <h3>Accessibilité</h3>
+                <p>Rendre la communication accessible à tous, quelle que soit la langue, le niveau d'éducation ou les capacités techniques.</p>
+            </div>
+            
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3>Confidentialité</h3>
+                <p>Protéger vos conversations avec un chiffrement de bout en bout. Votre vie privée est notre priorité absolue.</p>
+            </div>
+            
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h3>Innovation</h3>
+                <p>Pousser constamment les limites de la technologie pour créer des solutions de communication plus intelligentes et intuitives.</p>
+            </div>
+            
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-globe"></i>
+                </div>
+                <h3>Communauté</h3>
+                <p>Créer des connexions significatives qui transcendent les frontières géographiques, culturelles et linguistiques.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="section-title">
+            <h2 style="color: white;"><i class="fas fa-chart-line"></i> Notre Impact</h2>
+            <p style="color: rgba(255, 255, 255, 0.9);">Des chiffres qui parlent d'eux-mêmes</p>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number" id="statUsers">0</div>
+                <div class="stat-label">Utilisateurs Actifs</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="statLanguages">0</div>
+                <div class="stat-label">Langues Supportées</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="statMessages">0</div>
+                <div class="stat-label">Messages Traduits</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="statCountries">0</div>
+                <div class="stat-label">Pays Connectés</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>Rejoignez la révolution de la communication</h2>
+        <p>Des millions de personnes ont déjà découvert la liberté de communiquer sans barrières. À votre tour de vivre cette expérience.</p>
+        
+        <div class="cta-buttons">
+            <a href="{{ url_for('register') }}" class="cta-btn cta-btn-primary">
+                <i class="fas fa-rocket"></i> Commencer Maintenant
+            </a>
+            <a href="{{ url_for('index') }}" class="cta-btn cta-btn-secondary">
+                <i class="fas fa-home"></i> Retour à l'Accueil
+            </a>
+        </div>
+    </section>
+
+    <script>
+        // Animation des statistiques
+        function animateCounter(elementId, target, duration) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            
+            let start = 0;
+            const increment = target / (duration / 16); // 60fps
+            const timer = setInterval(() => {
+                start += increment;
+                if (start >= target) {
+                    start = target;
+                    clearInterval(timer);
+                }
+                
+                if (elementId === 'statMessages') {
+                    element.textContent = Math.floor(start).toLocaleString();
+                } else {
+                    element.textContent = Math.floor(start);
+                }
+            }, 16);
+        }
+
+        // Observateur pour déclencher les animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Animer les statistiques
+                    animateCounter('statUsers', 10000, 2000);
+                    animateCounter('statLanguages', 25, 1500);
+                    animateCounter('statMessages', 500000, 2500);
+                    animateCounter('statCountries', 150, 1800);
+                    
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Observer la section stats
+            const statsSection = document.querySelector('.stats-section');
+            if (statsSection) {
+                observer.observe(statsSection);
+            }
+            
+            // Animation au scroll
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            timelineItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(30px)';
+                
+                setTimeout(() => {
+                    item.style.transition = 'all 0.8s ease';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, 300 + (index * 200));
+            });
+            
+            // Animation des cartes
+            const cards = document.querySelectorAll('.team-card, .value-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.8s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 500 + (index * 100));
+            });
+        });
+
+        // Navigation functions
+        function goToHomePage() {
+            // Cette fonction serait normalement reliée à votre système de routing
+            // Pour l'exemple, nous affichons un message
+            alert("Redirection vers la page d'accueil");
+            // window.location.href = '/'; // Décommentez pour une vraie redirection
+        }
+
+        function goToRegister() {
+            alert("Redirection vers la page d'inscription");
+            // window.location.href = '/register';
+        }
+
+        // Effet de parallaxe sur le héros
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.about-hero');
+            if (hero) {
+                hero.style.backgroundPositionY = scrolled * 0.5 + 'px';
+            }
+        });
+    </script>
+</body>
+</html>

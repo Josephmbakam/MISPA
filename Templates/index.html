@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MISPA 7.0 - Messagerie Intelligente Sans Frontières</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #0a0e17;
+            color: #ffffff;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Background slideshow */
+        .slideshow-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            animation: slideshow 30s infinite;
+        }
+
+        .slide:nth-child(1) {
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('{{ url_for('static', filename='images/partage.jpg') }}');
+            animation-delay: 0s;
+        }
+
+        .slide:nth-child(2) {
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            animation-delay: 6s;
+        }
+        .slide:nth-child(3) {
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('{{ url_for('static', filename='images/enfants.webp') }}');
+            animation-delay: 12s;
+        }
+        
+        .slide:nth-child(4) {
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            animation-delay: 18s;
+        }
+        .slide:nth-child(5) {
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('{{ url_for('static', filename='images/connection.jpg') }}');
+            animation-delay: 24s;
+        }
+
+        .slide:nth-child(6) {
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            animation-delay: 30s;
+        }
+        .slide:nth-child(7) {
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('{{ url_for('static', filename='images/seul.jpg') }}');
+            animation-delay: 36s;
+        }
+
+        .slide:nth-child(8) {
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1512486130939-2c4f79935e4f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            animation-delay: 42s;
+        }
+        .slide:nth-child(9) {
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('{{ url_for('static', filename='images/ensemble.jpeg') }}');
+            animation-delay: 48s;
+        }
+        .slide:nth-child(10) {
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('{{ url_for('static', filename='images/group.avif') }}');
+            animation-delay: 54s;
+        }
+       
+
+        @keyframes slideshow {
+            0%, 20% { opacity: 1; }
+            25%, 100% { opacity: 0; }
+        }
+
+        /* Header */
+        .header {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 14, 23, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .logo-text h1 {
+            font-size: 28px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .logo-text p {
+            color: #a0a0c0;
+            font-size: 14px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        .nav-links a:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-size: 16px;
+        }
+
+        .btn-login {
+            background: transparent;
+            color: #ffffff;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-register {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 40px;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: #b0b0d0;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: rgba(30, 35, 50, 0.7);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: #667eea;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 30px;
+        }
+
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+
+        .feature-card p {
+            color: #a0a0c0;
+            line-height: 1.6;
+        }
+
+        /* People Images */
+        .people-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .person-card {
+            background: rgba(30, 35, 50, 0.7);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .person-card:hover {
+            transform: scale(1.03);
+        }
+
+        .person-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .person-info {
+            padding: 20px;
+        }
+
+        .person-info h4 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        .person-info p {
+            color: #a0a0c0;
+            font-size: 14px;
+        }
+
+        /* Chat Interface */
+        .chat-container {
+            background: rgba(30, 35, 50, 0.9);
+            border-radius: 20px;
+            overflow: hidden;
+            max-width: 1200px;
+            margin: 40px auto;
+            display: none;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .ai-avatar {
+            width: 50px;
+            height: 50px;
+            background: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #667eea;
+        }
+
+        .chat-header h3 {
+            font-size: 24px;
+        }
+
+        .chat-status {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+
+        .chat-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .chat-messages {
+            height: 500px;
+            overflow-y: auto;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .message {
+            max-width: 70%;
+            padding: 15px 20px;
+            border-radius: 18px;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        .message.ai {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            align-self: flex-start;
+        }
+
+        .message.user {
+            background: rgba(118, 75, 162, 0.1);
+            border: 1px solid rgba(118, 75, 162, 0.3);
+            align-self: flex-end;
+        }
+
+        .message-time {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .chat-input {
+            padding: 20px 30px;
+            background: rgba(40, 45, 60, 0.9);
+            display: flex;
+            gap: 15px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 15px 20px;
+            border-radius: 25px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 16px;
+        }
+
+        .chat-input input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .send-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .send-button:hover {
+            transform: scale(1.1);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 40px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 20px 40px;
+            background: rgba(30, 35, 50, 0.7);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .action-btn:hover {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+            transform: translateY(-5px);
+        }
+
+        .action-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(10, 14, 23, 0.9);
+            padding: 40px;
+            margin-top: 80px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-section h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+
+        .footer-section a {
+            display: block;
+            color: #a0a0c0;
+            text-decoration: none;
+            margin-bottom: 10px;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: #667eea;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 40px;
+            color: #a0a0c0;
+            font-size: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 40px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h2 {
+                font-size: 32px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+            
+            .features-grid {
+                padding: 20px;
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Flask session indicator */
+        .flask-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(102, 126, 234, 0.9);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            z-index: 1000;
+            display: none;
+        }
+
+        .flask-indicator.connected {
+            background: rgba(46, 204, 113, 0.9);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Slideshow -->
+    <div class="slideshow-container">
+        <div class="slide"></div>
+        <div class="slide"></div>
+        <div class="slide"></div>
+        <div class="slide"></div>
+        <div class="slide"></div>
+        <div class="slide"></div>
+        <div class="slide"></div>
+        <div class="slide"></div>
+        <div class="slide"></div>
+        <div class="slide"></div>
+    </div>
+
+    <!-- Flask connection indicator -->
+    <div class="flask-indicator" id="flaskIndicator">
+        <i class="fas fa-spinner fa-spin"></i> Connexion Flask...
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-comments"></i>
+            </div>
+            <div class="logo-text">
+                <h1>MISPA 7.0</h1>
+                <p>Messagerie Intelligente Sans Frontières</p>
+            </div>
+        </div>
+        
+        <nav class="nav-links">
+            <!-- Liens Flask pour la navigation -->
+            <a href="{{ url_for('features') }}"><i class="fas fa-star"></i> Fonctionnalités</a>
+            <a href="{{ url_for('about') }}"><i class="fas fa-info-circle"></i> À propos</a>
+            <a href="{{ url_for('contact') }}"><i class="fas fa-envelope"></i> Contact</a>
+            <a href="{{ url_for('download') }}"><i class="fas fa-download"></i> Télécharger</a>
+            <a href="{{ url_for('help_page') }}"><i class="fas fa-question-circle"></i> Aide</a>
+        
+        <div class="auth-buttons">
+            {% if current_user.is_authenticated %}
+                <!-- Si l'utilisateur est connecté -->
+                <button class="btn btn-login" onclick="window.location.href='{{ url_for('chat') }}'">
+                    <i class="fas fa-comments"></i> Chat
+                </button>
+                <button class="btn btn-register" onclick="window.location.href='{{ url_for('logout') }}'">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </button>
+            {% else %}
+                <!-- Si l'utilisateur n'est pas connecté -->
+                <button class="btn btn-login" onclick="window.location.href='{{ url_for('login') }}'">
+                    <i class="fas fa-sign-in-alt"></i> Connexion
+                </button>
+                <button class="btn btn-register" onclick="window.location.href='{{ url_for('register') }}'">
+                    <i class="fas fa-user-plus"></i> Inscription
+                </button>
+            {% endif %}
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h2>Bienvenue sur la messagerie intelligente du futur</h2>
+        <p>Communiquez avec n'importe qui, dans n'importe quelle langue, grâce à notre intelligence artificielle de traduction en temps réel.</p>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" style="max-width: 600px; margin: 20px auto; padding: 15px; border-radius: 8px; background: {% if category == 'success' %}rgba(46, 204, 113, 0.1){% elif category == 'error' %}rgba(231, 76, 60, 0.1){% else %}rgba(52, 152, 219, 0.1){% endif %}; border: 1px solid {% if category == 'success' %}rgba(46, 204, 113, 0.3){% elif category == 'error' %}rgba(231, 76, 60, 0.3){% else %}rgba(52, 152, 219, 0.3){% endif %}; color: {% if category == 'success' %}#2ecc71{% elif category == 'error' %}#e74c3c{% else %}#3498db{% endif %};">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <div class="quick-actions">
+            <div class="action-btn" onclick="openChat()">
+                <div class="action-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div>
+                    <h4>Discuter avec Omni7.0</h4>
+                    <p>Notre IA vous accompagne</p>
+                </div>
+            </div>
+            
+            <div class="action-btn" onclick="window.location.href='{{ url_for('features') }}'">
+                <div class="action-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div>
+                    <h4>Fonctionnalités</h4>
+                    <p>Explorez toutes les options</p>
+                </div>
+            </div>
+            
+            {% if current_user.is_authenticated %}
+                <div class="action-btn" onclick="window.location.href='{{ url_for('chat') }}'">
+                    <div class="action-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <div>
+                        <h4>Accéder au Chat</h4>
+                        <p>Continuer vos conversations</p>
+                    </div>
+                </div>
+            {% else %}
+                <div class="action-btn" onclick="window.location.href='{{ url_for('register') }}'">
+                    <div class="action-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <div>
+                        <h4>Commencer Maintenant</h4>
+                        <p>Inscription gratuite</p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Features Grid -->
+    <section class="features-grid" id="features">
+        <div class="feature-card" onclick="window.location.href='{{ url_for('chat') }}'">
+            <div class="feature-icon">
+                <i class="fas fa-language"></i>
+            </div>
+            <h3>Traduction Instantanée</h3>
+            <p>Communiquez dans plus de 50 langues avec notre système de traduction en temps réel. L'IA adapte le ton et le contexte.</p>
+        </div>
+        
+        <div class="feature-card" onclick="openChat()">
+            <div class="feature-icon">
+                <i class="fas fa-robot"></i>
+            </div>
+            <h3>Omni7.0 Assistant IA</h3>
+            <p>Notre intelligence artificielle vous assiste dans vos conversations et s'adapte à votre style de communication.</p>
+        </div>
+        
+        <div class="feature-card" onclick="window.location.href='{{ url_for('settings') }}'">
+            <div class="feature-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3>Sécurité Maximale</h3>
+            <p>Chiffrement de bout en bout, authentification à deux facteurs et protection des données personnelles.</p>
+        </div>
+        
+        <div class="feature-card" onclick="window.location.href='{{ url_for('chat') }}'">
+            <div class="feature-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <h3>Groupes Intelligents</h3>
+            <p>Créez des groupes avec traduction automatique pour chaque membre selon sa langue préférée.</p>
+        </div>
+        
+        <div class="feature-card" onclick="window.location.href='{{ url_for('chat') }}'">
+            <div class="feature-icon">
+                <i class="fas fa-photo-video"></i>
+            </div>
+            <h3>Médias Intelligents</h3>
+            <p>Partagez photos, vidéos et documents avec légendes automatiquement traduites.</p>
+        </div>
+        
+        <div class="feature-card" onclick="window.location.href='{{ url_for('chat') }}'">
+            <div class="feature-icon">
+                <i class="fas fa-microphone"></i>
+            </div>
+            <h3>Messages Vocaux</h3>
+            <p>Envoyez des messages vocaux avec transcription et traduction automatique.</p>
+        </div>
+    </section>
+
+    <!-- People Showcase -->
+    <section class="people-showcase">
+        <div class="person-card">
+            <div class="person-image" style="background-image: url('{{ url_for('static', filename='images/leathicia.jpg') }}')"></div>
+
+            <div class="person-info">
+                <h4>Leathicia, Paris</h4>
+                <p>"Grâce à MISPA, je peux discuter avec mes amis au Japon sans barrière linguistique. La traduction est tellement naturelle !"</p>
+            </div>
+        </div>
+        
+        <div class="person-card">
+            <div class="person-image" style="background-image: url('{{ url_for('static', filename='images/mireille.jpg') }}')"></div>
+            <div class="person-info">
+                <h4>Mireille, Genève</h4>
+                <p>"L'IA Omni7.0 m'aide dans mes affaires internationales. Je communique avec des clients partout dans le monde."</p>
+            </div>
+        </div>
+        
+        <div class="person-card">
+            <div class="person-image" style="background-image: url('{{ url_for('static', filename='images/gates.jpeg') }}')"></div>
+            <div class="person-info">
+                <h4>Charly, Berlin</h4>
+                <p>"Les vidéoconférences avec traduction simultanée ont transformé notre façon de travailler en équipe internationale."</p>
+            </div>
+        </div>
+        
+        <div class="person-card">
+            <div class="person-image" style="background-image: url('{{ url_for('static', filename='images/Mbajo1.jpg') }}')"></div>
+            <div class="person-info">
+                <h4>Mbajo, Tokyo</h4>
+                <p>"L'assistant IA m'apprend des expressions françaises tout en discutant avec mes correspondants. C'est génial !"</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chat Interface (Hidden by default) -->
+    <div class="chat-container" id="chatInterface">
+        <div class="chat-header">
+            <div class="chat-header-info">
+                <div class="ai-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div>
+                    <h3>Omni7.0 Assistant IA</h3>
+                    <p class="chat-status">En ligne - Prêt à vous aider</p>
+                </div>
+            </div>
+            <button class="chat-close" onclick="closeChat()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <!-- Messages will be inserted here by JavaScript -->
+        </div>
+        
+        <div class="chat-input">
+            <input type="text" id="messageInput" placeholder="Écrivez votre message ici..." onkeypress="handleKeyPress(event)">
+            <button class="send-button" onclick="sendMessage()">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>MISPA 7.0</h4>
+                <p>Messagerie Intelligente Sans Frontières. Communiquez sans limites.</p>
+                <div style="margin-top: 20px;">
+                    <a href="https://x.com/se_connecter?lang=fr" target="_blank"><i class="fab fa-twitter"></i> Twitter</a>
+                    <a href="https://web.facebook.com/profile.php?id=61585929913218&locale=fr_FR" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
+                    <a href="https://www.instagram.com/mbajo777/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+                    <a href="https://cm.linkedin.com/in/joseph-mbakam-b30361210" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Liens rapides</h4>
+                <a href="{{ url_for('login') }}">Connexion</a>
+                <a href="{{ url_for('register') }}">Inscription</a>
+                <a href="{{ url_for('about') }}">À propos</a>
+                <a href="#">Blog</a>
+                <a href="#">Carrières</a>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Support</h4>
+                <a href="{{ url_for('help_page') }}">Centre d'aide</a>
+                <a href="{{ url_for('contact') }}">Nous contacter</a>
+                <a href="#">Politique de confidentialité</a>
+                <a href="#">Conditions d'utilisation</a>
+                <a href="#">Gestion des cookies</a>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Télécharger</h4>
+                <a href="https://apps.apple.com" target="_blank"><i class="fab fa-apple"></i> App Store</a>
+                <a href="https://play.google.com" target="_blank"><i class="fab fa-google-play"></i> Google Play</a>
+                <a href="{{ url_for('download') }}"><i class="fab fa-windows"></i> Windows</a>
+                <a href="{{ url_for('download') }}"><i class="fab fa-linux"></i> Linux</a>
+                <a href="{{ url_for('index') }}"><i class="fas fa-desktop"></i> Web App</a>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2024 MISPA 7.0 - Messagerie Intelligente Sans Frontières. Tous droits réservés.</p>
+            <p style="margin-top: 10px; color: #667eea;">Développé avec ❤️ pour connecter le monde</p>
+            {% if current_user.is_authenticated %}
+                <p style="margin-top: 5px; font-size: 12px; color: #2ecc71;">
+                    <i class="fas fa-circle"></i> Connecté en tant que {{ current_user.username }}
+                </p>
+            {% endif %}
+        </div>
+    </footer>
+
+    <script>
+        // Chat functionality
+        let userName = null;
+        let userData = JSON.parse(localStorage.getItem('omniUserData')) || {
+            firstName: null,
+            lastName: null,
+            knowsName: false
+        };
+
+        // Vérifier la connexion Flask
+        function checkFlaskConnection() {
+            const indicator = document.getElementById('flaskIndicator');
+            
+            // Tenter d'accéder à une route Flask pour vérifier la connexion
+            fetch('/health')
+                .then(response => response.json())
+                .then(data => {
+                    indicator.innerHTML = '<i class="fas fa-check"></i> Flask connecté';
+                    indicator.classList.add('connected');
+                    
+                    setTimeout(() => {
+                        indicator.style.display = 'none';
+                    }, 3000);
+                })
+                .catch(error => {
+                    indicator.innerHTML = '<i class="fas fa-times"></i> Flask non connecté';
+                    
+                    setTimeout(() => {
+                        indicator.style.display = 'none';
+                    }, 5000);
+                    
+                    console.error('Erreur connexion Flask:', error);
+                });
+        }
+
+        // Vérifier si l'utilisateur est connecté via Flask
+        function checkUserSession() {
+            // Cette fonction pourrait être utilisée pour synchroniser l'état de l'utilisateur
+            console.log("Vérification de la session utilisateur...");
+            
+            // Si l'utilisateur est connecté via Flask, mettre à jour l'interface
+            {% if current_user.is_authenticated %}
+                console.log("Utilisateur connecté: {{ current_user.username }}");
+                // Mettre à jour les données utilisateur
+                if (!userData.knowsName) {
+                    userData.firstName = "{{ current_user.username }}";
+                    userData.knowsName = true;
+                    localStorage.setItem('omniUserData', JSON.stringify(userData));
+                }
+            {% endif %}
+        }
+
+        function openChat() {
+            document.getElementById('chatInterface').style.display = 'block';
+            document.getElementById('messageInput').focus();
+            
+            // Clear previous messages
+            document.getElementById('chatMessages').innerHTML = '';
+            
+            // Add welcome message
+            setTimeout(() => {
+                if (!userData.knowsName) {
+                    addMessage("Bonjour ! Je suis Omni7.0, votre assistant IA personnel. Je serais ravi de vous connaître ! Quel est votre nom ?", 'ai');
+                } else {
+                    addMessage(`Bonjour ${userData.firstName} ! Comment puis-je vous aider aujourd'hui ? 😊`, 'ai');
+                }
+            }, 500);
+        }
+
+        function closeChat() {
+            document.getElementById('chatInterface').style.display = 'none';
+        }
+
+        function addMessage(text, sender) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            
+            messageDiv.innerHTML = `
+                <div>${formatMessage(text)}</div>
+                <div class="message-time">${time}</div>
+            `;
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function formatMessage(text) {
+            // Replace line breaks with <br> and format some special patterns
+            return text.replace(/\n/g, '<br>')
+                      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                      .replace(/\*(.*?)\*/g, '<em>$1</em>');
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message
+            addMessage(message, 'user');
+            input.value = '';
+            
+            // Process AI response
+            setTimeout(() => {
+                processAIResponse(message);
+            }, 1000);
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function processAIResponse(userMessage) {
+            let response = "";
+            const lowerMessage = userMessage.toLowerCase();
+            
+            if (!userData.knowsName) {
+                // First interaction - ask for name
+                const nameMatch = userMessage.match(/(je m'appelle|mon nom est|je suis|mon prénom est) (.+)/i);
+                if (nameMatch) {
+                    const fullName = nameMatch[2].trim();
+                    const nameParts = fullName.split(' ');
+                    
+                    userData.firstName = nameParts[0];
+                    userData.lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : null;
+                    userData.knowsName = true;
+                    
+                    // Save to localStorage
+                    localStorage.setItem('omniUserData', JSON.stringify(userData));
+                    
+                    response = `Enchanté ${userData.firstName} ! 🌟 Je m'appelle Omni7.0, votre assistant IA personnel sur MISPA. Je suis là pour vous aider à naviguer dans l'application, répondre à vos questions sur les fonctionnalités, et vous assister dans vos communications internationales. Comment puis-je vous aider aujourd'hui ?`;
+                } else {
+                    response = "Je serais ravi de vous connaître ! Pourriez-vous me dire votre nom ? Par exemple, vous pouvez dire 'Je m'appelle [votre prénom]'.";
+                }
+            } else {
+                // Subsequent interactions
+                if (lowerMessage.includes('qui es-tu') || lowerMessage.includes('qui êtes-vous') || lowerMessage.includes('presente toi')) {
+                    response = `Je suis Omni7.0, l'assistant IA intelligent de MISPA 7.0 ! 🤖\n\nJe peux vous aider à :\n• **Expliquer toutes les fonctionnalités** de MISPA\n• **Vous guider** dans l'utilisation de la messagerie\n• **Répondre à vos questions** sur la traduction automatique\n• **Vous assister** avec les paramètres de sécurité\n• **Créer des conversations** avec traduction en temps réel\n• Et bien plus encore !\n\nQue souhaitez-vous savoir, ${userData.firstName} ?`;
+                } else if (lowerMessage.includes('fonctionnalité') || lowerMessage.includes('que peux-tu faire') || lowerMessage.includes('features')) {
+                    response = `MISPA 7.0 offre des fonctionnalités incroyables :\n\n✨ **Traduction en temps réel** : Communiquez dans 50+ langues\n✨ **Omni7.0 IA** : C'est moi ! Je vous assiste 24/7\n✨ **Messages vocaux traduits** : Parlez, on transcrit et traduit\n✨ **Groupes intelligents** : Chaque membre voit les messages dans sa langue\n✨ **Sécurité maximale** : Chiffrement de bout en bout\n✨ **Partage de fichiers** : Avec légendes automatiquement traduites\n\nLaquelle vous intéresse, ${userData.firstName} ?`;
+                } else if (lowerMessage.includes('aide') || lowerMessage.includes('help') || lowerMessage.includes('comment')) {
+                    response = `Avec plaisir ${userData.firstName} ! Voici comment utiliser MISPA :\n\n1. **Pour démarrer** : Inscrivez-vous gratuitement\n2. **Pour traduire** : Écrivez normalement, la traduction est automatique\n3. **Pour les contacts** : Ajoutez des amis via leur nom d'utilisateur\n4. **Pour les fichiers** : Cliquez sur l'icône 📎\n5. **Pour la sécurité** : Activez la 2FA dans Paramètres → Sécurité\n6. **Pour l'IA** : Je suis toujours là pour vous aider !\n\nUne question spécifique ?`;
+                } else if (lowerMessage.includes('traduction') || lowerMessage.includes('langue') || lowerMessage.includes('translate')) {
+                    response = `La traduction sur MISPA est magique ! 🔮\n\n• **Automatique** : Écrivez dans votre langue, vos contacts reçoivent dans la leur\n• **Précise** : Notre IA comprend le contexte et les nuances\n• **50+ langues** : Du français au swahili, du chinois au russe\n• **En temps réel** : Aucun délai, la conversation est fluide\n• **Messages vocaux** : Transcription + traduction automatique\n\nVoulez-vous essayer une démonstration, ${userData.firstName} ?`;
+                } else if (lowerMessage.includes('sécurité') || lowerMessage.includes('securite') || lowerMessage.includes('security')) {
+                    response = `Votre sécurité est notre priorité absolue ! 🔒\n\n✅ **Chiffrement de bout en bout** : Seuls vous et votre destinataire peuvent lire les messages\n✅ **Authentification 2FA** : Protection supplémentaire pour votre compte\n✅ **Suppression automatique** : Messages qui disparaissent après lecture\n✅ **Contrôle des données** : Vous décidez ce qui est stocké\n✅ **Audits réguliers** : Nous testons constamment notre sécurité\n\nRassuré(e), ${userData.firstName} ?`;
+                } else if (lowerMessage.includes('inscription') || lowerMessage.includes('register') || lowerMessage.includes('compte')) {
+                    response = `Excellent choix ${userData.firstName} ! 🚀\n\nPour créer votre compte :\n1. Cliquez sur "Inscription" en haut à droite\n2. Entrez votre email et choisissez un mot de passe\n3. Confirmez votre email (vérifiez vos spams)\n4. Personnalisez votre profil avec une photo\n5. Commencez à ajouter des contacts !\n\nC'est gratuit et sans engagement. Prêt(e) à rejoindre la communauté MISPA ?`;
+                } else if (lowerMessage.includes('merci') || lowerMessage.includes('thank')) {
+                    response = `De rien ${userData.firstName} ! C'est un plaisir de vous aider. 😊\nN'hésitez pas si vous avez d'autres questions. Je suis là pour vous !`;
+                } else if (lowerMessage.includes('bonjour') || lowerMessage.includes('salut') || lowerMessage.includes('hi') || lowerMessage.includes('hello')) {
+                    response = `Bonjour ${userData.firstName} ! 😊 Comment allez-vous aujourd'hui ? J'espère que vous passez une excellente journée. De quoi aimeriez-vous discuter ?`;
+                } else if (lowerMessage.includes('au revoir') || lowerMessage.includes('bye') || lowerMessage.includes('à plus')) {
+                    response = `Au revoir ${userData.firstName} ! Ce fut un plaisir de discuter avec vous. 👋\nRevenez quand vous voulez, je serai là !\n\nN'oubliez pas : MISPA vous attend pour connecter le monde 🌍`;
+                } else if (lowerMessage.includes('flask') || lowerMessage.includes('connect')) {
+                    response = `Ah, vous parlez de Flask ! 🐍\n\nEn ce moment, vous êtes connecté à notre serveur Flask qui gère :\n• Votre authentification\n• Vos conversations\n• La traduction en temps réel\n• Le stockage des messages\n\nTout fonctionne parfaitement ! 😊`;
+                } else {
+                    // Default intelligent responses
+                    const responses = [
+                        `C'est une excellente question ${userData.firstName} ! Laissez-moi réfléchir... Notre système MISPA est conçu pour ça. Avez-vous essayé la fonctionnalité de traduction en temps réel ?`,
+                        `Je comprends votre demande ${userData.firstName}. MISPA a justement une solution pour cela. Saviez-vous que vous pouvez créer des groupes avec traduction automatique pour chaque membre ?`,
+                        `Très intéressant ${userData.firstName} ! En ce qui concerne MISPA, je vous recommande d'explorer les paramètres de confidentialité. La sécurité est notre priorité.`,
+                        `${userData.firstName}, pour cette question, je pense que la meilleure approche est d'utiliser notre assistant de configuration. Voulez-vous que je vous guide ?`,
+                        `Excellent point ${userData.firstName} ! C'est exactement pour ce genre de besoins que MISPA a été créé. Avez-vous vu notre démo vidéo ? Elle montre ces fonctionnalités en action.`,
+                        `Je note votre intérêt ${userData.firstName}. MISPA évolue constamment. Cette fonctionnalité pourrait être ajoutée dans une future mise à jour !`
+                    ];
+                    response = responses[Math.floor(Math.random() * responses.length)];
+                }
+            }
+            
+            addMessage(response, 'ai');
+        }
+
+        // Vérifier la connexion Flask au chargement
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                checkFlaskConnection();
+                checkUserSession();
+                
+                // Show a notification
+                console.log("MISPA 7.0 est prêt ! Cliquez sur 'Discuter avec Omni7.0' pour commencer.");
+                
+                // Afficher l'indicateur Flask
+                document.getElementById('flaskIndicator').style.display = 'block';
+            }, 1000);
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if(targetId !== '#') {
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+
+        // API pour communiquer avec Flask (Omni7.0)
+        async function sendToOmniAPI(message) {
+            try {
+                const response = await fetch('/api/omni', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        user_id: {% if current_user.is_authenticated %}{{ current_user.id }}{% else %}null{% endif %}
+                    })
+                });
+                
+                const data = await response.json();
+                return data.response;
+            } catch (error) {
+                console.error('Erreur API Omni:', error);
+                return "Désolé, je ne peux pas accéder au serveur pour le moment. Essayez de rafraîchir la page.";
+            }
+        }
+
+        // Fonction pour utiliser l'API Flask Omni7.0
+        async function sendMessageToFlask(message) {
+            const aiResponse = await sendToOmniAPI(message);
+            if (aiResponse) {
+                addMessage(aiResponse, 'ai');
+            }
+        }
+
+        // Mettre à jour la fonction sendMessage pour utiliser l'API Flask
+        async function sendMessageWithAPI() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message
+            addMessage(message, 'user');
+            input.value = '';
+            
+            // Process AI response via Flask API
+            try {
+                const response = await sendToOmniAPI(message);
+                if (response) {
+                    addMessage(response, 'ai');
+                }
+            } catch (error) {
+                // Fallback to local AI
+                processAIResponse(message);
+            }
+        }
+
+        // Option: Remplacer la fonction sendMessage par la version API
+        // sendMessage = sendMessageWithAPI;
+    </script>
+</body>
+</html>

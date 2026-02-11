@@ -1,0 +1,916 @@
+{% extends "base.html" %}
+
+{% block title %}Paramètres - MISPA 7.0{% endblock %}
+
+{% block extra_css %}
+<style>
+    .settings-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 30px;
+    }
+
+    .settings-header {
+        margin-bottom: 40px;
+    }
+
+    .settings-header h1 {
+        font-size: 36px;
+        color: white;
+        margin-bottom: 10px;
+    }
+
+    .settings-header p {
+        color: #a0a0c0;
+        font-size: 16px;
+    }
+
+    .settings-tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 30px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 10px;
+        flex-wrap: wrap;
+    }
+
+    .settings-tab {
+        padding: 12px 24px;
+        background: transparent;
+        border: none;
+        color: #a0a0c0;
+        cursor: pointer;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .settings-tab:hover {
+        background: rgba(102, 126, 234, 0.1);
+        color: #667eea;
+    }
+
+    .settings-tab.active {
+        background: rgba(102, 126, 234, 0.2);
+        color: #667eea;
+        border-bottom: 2px solid #667eea;
+    }
+
+    .settings-content {
+        background: rgba(30, 35, 50, 0.7);
+        border-radius: 16px;
+        padding: 40px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
+
+    .settings-section {
+        margin-bottom: 40px;
+        padding-bottom: 40px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .settings-section:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+
+    .section-title {
+        font-size: 24px;
+        color: white;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .section-title i {
+        color: #667eea;
+    }
+
+    .form-row {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        flex: 1;
+    }
+
+    .avatar-upload {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+
+    .avatar-preview {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        color: white;
+        overflow: hidden;
+        border: 3px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .avatar-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .avatar-actions {
+        flex: 1;
+    }
+
+    .avatar-actions .btn {
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+
+    .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+    .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 34px;
+    }
+
+    .toggle-slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+    input:checked + .toggle-slider {
+        background-color: #667eea;
+    }
+
+    input:checked + .toggle-slider:before {
+        transform: translateX(26px);
+    }
+
+    .toggle-label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        padding: 15px;
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .toggle-text {
+        flex: 1;
+    }
+
+    .toggle-text h4 {
+        color: white;
+        margin-bottom: 5px;
+        font-size: 16px;
+    }
+
+    .toggle-text p {
+        color: #a0a0c0;
+        font-size: 14px;
+    }
+
+    .qr-code-container {
+        text-align: center;
+        padding: 30px;
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        margin-top: 20px;
+        border: 1px solid rgba(102, 126, 234, 0.3);
+    }
+
+    .qr-code {
+        max-width: 200px;
+        margin: 0 auto 20px;
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+    }
+
+    .qr-code img {
+        width: 100%;
+        height: auto;
+    }
+
+    .backup-codes {
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .codes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
+        margin: 15px 0;
+    }
+
+    .code-item {
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 4px;
+        text-align: center;
+        font-family: 'Courier New', monospace;
+        font-weight: 600;
+        color: #667eea;
+    }
+
+    .danger-zone {
+        background: rgba(231, 76, 60, 0.1);
+        border: 1px solid rgba(231, 76, 60, 0.3);
+        border-radius: 12px;
+        padding: 30px;
+        margin-top: 40px;
+    }
+
+    .danger-zone h3 {
+        color: #e74c3c;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .danger-zone p {
+        color: #ffa8a8;
+        margin-bottom: 20px;
+    }
+
+    .language-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .language-option {
+        padding: 15px;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .language-option:hover {
+        border-color: rgba(102, 126, 234, 0.5);
+        background: rgba(102, 126, 234, 0.05);
+    }
+
+    .language-option.selected {
+        border-color: #667eea;
+        background: rgba(102, 126, 234, 0.1);
+    }
+
+    .language-flag {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 18px;
+    }
+
+    .language-info {
+        flex: 1;
+    }
+
+    .language-name {
+        color: white;
+        font-weight: 500;
+    }
+
+    .language-code {
+        color: #a0a0c0;
+        font-size: 14px;
+    }
+
+    .theme-options {
+        display: flex;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .theme-option {
+        flex: 1;
+        padding: 20px;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-align: center;
+    }
+
+    .theme-option:hover {
+        border-color: rgba(102, 126, 234, 0.5);
+    }
+
+    .theme-option.selected {
+        border-color: #667eea;
+        background: rgba(102, 126, 234, 0.1);
+    }
+
+    .theme-preview {
+        width: 60px;
+        height: 60px;
+        border-radius: 8px;
+        margin: 0 auto 15px;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .theme-light {
+        background: #f5f7ff;
+    }
+
+    .theme-dark {
+        background: #0a0e17;
+    }
+
+    .theme-auto {
+        background: linear-gradient(135deg, #f5f7ff 50%, #0a0e17 50%);
+    }
+
+    .theme-option h4 {
+        color: white;
+        margin-bottom: 5px;
+    }
+
+    .theme-option p {
+        color: #a0a0c0;
+        font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+        .form-row {
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .avatar-upload {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .language-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .theme-options {
+            flex-direction: column;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="settings-container">
+    <div class="settings-header">
+        <h1>Paramètres</h1>
+        <p>Personnalisez votre expérience MISPA selon vos préférences</p>
+    </div>
+
+    <div class="settings-tabs">
+        <button class="settings-tab active" data-tab="profile">
+            <i class="fas fa-user"></i> Profil
+        </button>
+        <button class="settings-tab" data-tab="security">
+            <i class="fas fa-shield-alt"></i> Sécurité
+        </button>
+        <button class="settings-tab" data-tab="appearance">
+            <i class="fas fa-palette"></i> Apparence
+        </button>
+        <button class="settings-tab" data-tab="notifications">
+            <i class="fas fa-bell"></i> Notifications
+        </button>
+        <button class="settings-tab" data-tab="privacy">
+            <i class="fas fa-lock"></i> Confidentialité
+        </button>
+        <button class="settings-tab" data-tab="language">
+            <i class="fas fa-language"></i> Langue
+        </button>
+    </div>
+
+    <div class="settings-content">
+        <form method="POST" action="{{ url_for('settings') }}" enctype="multipart/form-data">
+            <!-- Onglet Profil -->
+            <div id="profile-tab" class="settings-tab-content">
+                <div class="settings-section">
+                    <h2 class="section-title"><i class="fas fa-id-card"></i> Informations du profil</h2>
+                    
+                    <div class="avatar-upload">
+                        <div class="avatar-preview" id="avatarPreview">
+                            {% if current_user.profile_picture and current_user.profile_picture != 'default.png' %}
+                                <img src="{{ url_for('static', filename='uploads/profile_pictures/' + current_user.profile_picture) }}" alt="Avatar">
+                            {% else %}
+                                {{ current_user.username[:1]|upper }}
+                            {% endif %}
+                        </div>
+                        <div class="avatar-actions">
+                            <input type="file" id="profile_picture" name="profile_picture" accept="image/*" style="display: none;" onchange="previewImage(event)">
+                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('profile_picture').click()">
+                                <i class="fas fa-camera"></i> Changer la photo
+                            </button>
+                            <button type="button" class="btn btn-secondary" onclick="resetAvatar()">
+                                <i class="fas fa-user-circle"></i> Avatar par défaut
+                            </button>
+                            <p style="color: #a0a0c0; margin-top: 10px; font-size: 14px;">
+                                Taille recommandée : 500x500px. Formats supportés : JPG, PNG, GIF.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="username" class="form-label">Nom d'utilisateur</label>
+                            <input type="text" id="username" name="username" class="form-control" 
+                                   value="{{ current_user.username }}" readonly>
+                            <small style="color: #a0a0c0; display: block; margin-top: 5px;">
+                                Le nom d'utilisateur ne peut pas être modifié
+                            </small>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="form-label">Adresse email</label>
+                            <input type="email" id="email" name="email" class="form-control" 
+                                   value="{{ current_user.email }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status" class="form-label">Statut personnel</label>
+                        <input type="text" id="status" name="status" class="form-control" 
+                               value="{{ current_user.status or 'En ligne' }}" 
+                               placeholder="Ex: Disponible, Occupé, En réunion...">
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h2 class="section-title"><i class="fas fa-info-circle"></i> Informations supplémentaires</h2>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Date d'inscription</label>
+                        <div style="padding: 12px 16px; background: rgba(255, 255, 255, 0.05); border-radius: 8px; color: #a0a0c0;">
+                            {{ current_user.created_at.strftime('%d/%m/%Y') if current_user.created_at else 'Non disponible' }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Dernière connexion</label>
+                        <div style="padding: 12px 16px; background: rgba(255, 255, 255, 0.05); border-radius: 8px; color: #a0a0c0;">
+                            {{ current_user.last_seen.strftime('%d/%m/%Y %H:%M') if current_user.last_seen else 'Jamais' }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Onglet Sécurité -->
+            <div id="security-tab" class="settings-tab-content" style="display: none;">
+                <div class="settings-section">
+                    <h2 class="section-title"><i class="fas fa-lock"></i> Mot de passe</h2>
+                    
+                    <div class="form-group">
+                        <label for="current_password" class="form-label">Mot de passe actuel</label>
+                        <input type="password" id="current_password" name="current_password" class="form-control" 
+                               placeholder="Entrez votre mot de passe actuel">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="new_password" class="form-label">Nouveau mot de passe</label>
+                            <input type="password" id="new_password" name="new_password" class="form-control" 
+                                   placeholder="Créez un nouveau mot de passe">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm_new_password" class="form-label">Confirmer le nouveau mot de passe</label>
+                            <input type="password" id="confirm_new_password" name="confirm_new_password" class="form-control" 
+                                   placeholder="Confirmez le nouveau mot de passe">
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-secondary" onclick="changePassword()">
+                        <i class="fas fa-key"></i> Changer le mot de passe
+                    </button>
+                </div>
+
+                <div class="settings-section">
+                    <h2 class="section-title"><i class="fas fa-shield-alt"></i> Authentification à deux facteurs</h2>
+                    
+                    <div class="toggle-label">
+                        <div class="toggle-text">
+                            <h4>Activer l'authentification à deux facteurs</h4>
+                            <p>Ajoutez une couche de sécurité supplémentaire à votre compte</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="enable_2fa" name="enable_2fa" 
+                                   {% if current_user.two_factor_enabled %}checked{% endif %}>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    {% if current_user.two_factor_enabled %}
+                    <div class="qr-code-container">
+                        <h4 style="color: white; margin-bottom: 20px;">QR Code pour l'authentification</h4>
+                        {% if qr_code %}
+                            <div class="qr-code">
+                                <img src="{{ qr_code }}" alt="QR Code 2FA">
+                            </div>
+                        {% else %}
+                            <div style="padding: 30px; background: white; border-radius: 8px; max-width: 200px; margin: 0 auto 20px;">
+                                <p style="color: #333; text-align: center; font-weight: 600;">QR Code indisponible</p>
+                            </div>
+                        {% endif %}
+                        <p style="color: #a0a0c0; margin-bottom: 20px;">
+                            Scannez ce QR code avec votre application d'authentification (Google Authenticator, Authy, etc.)
+                        </p>
+                        <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; margin: 20px 0;">
+                            <p style="color: white; font-weight: 600; margin-bottom: 10px;">Clé secrète :</p>
+                            <p style="color: #667eea; font-family: monospace; font-size: 18px; word-break: break-all;">
+                                {{ current_user.two_factor_secret }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="backup-codes">
+                        <h4 style="color: white; margin-bottom: 15px;">Codes de récupération</h4>
+                        <p style="color: #a0a0c0; margin-bottom: 15px;">
+                            Ces codes vous permettent d'accéder à votre compte si vous perdez votre téléphone.
+                            <strong>Conservez-les dans un endroit sûr !</strong>
+                        </p>
+                        <div class="codes-grid">
+                            {% for i in range(10) %}
+                            <div class="code-item">{{ "%06d"|format(random_number_generator(100000, 999999)) }}</div>
+                            {% endfor %}
+                        </div>
+                        <button type="button" class="btn btn-secondary" style="margin-top: 15px;">
+                            <i class="fas fa-redo"></i> Générer de nouveaux codes
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="settings-section">
+                    <h2 class="section-title"><i class="fas fa-desktop"></i> Sessions actives</h2>
+                    
+                    <div style="background: rgba(0, 0, 0, 0.1); border-radius: 8px; padding: 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <div>
+                                <h4 style="color: white; margin-bottom: 5px;">Cette session</h4>
+                                <p style="color: #a0a0c0; font-size: 14px;">
+                                    {{ request.user_agent.platform }} • {{ request.user_agent.browser }}
+                                </p>
+                                <p style="color: #a0a0c0; font-size: 12px;">
+                                    Connecté depuis {{ current_user.last_seen.strftime('%H:%M') if current_user.last_seen else '' }}
+                                </p>
+                            </div>
+                            <div style="color: #2ecc71; font-weight: 600;">
+                                <i class="fas fa-circle"></i> Actif
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-secondary" style="margin-top: 20px;">
+                        <i class="fas fa-sign-out-alt"></i> Déconnecter toutes les autres sessions
+                    </button>
+                </div>
+            </div>
+
+            <!-- Onglet Apparence -->
+            <div id="appearance-tab" class="settings-tab-content" style="display: none;">
+                <div class="settings-section">
+                    <h2 class="section-title"><i class="fas fa-palette"></i> Thème</h2>
+                    
+                    <div class="theme-options">
+                        <div class="theme-option {% if current_user.theme == 'light' %}selected{% endif %}" data-theme="light">
+                            <div class="theme-preview theme-light"></div>
+                            <h4>Clair</h4>
+                            <p>Interface claire</p>
+                        </div>
+                        
+                        <div class="theme-option {% if current_user.theme == 'dark' %}selected{% endif %}" data-theme="dark">
+                            <div class="theme-preview theme-dark"></div>
+                            <h4>Sombre</h4>
+                            <p>Interface sombre</p>
+                        </div>
+                        
+                        <div class="theme-option {% if current_user.theme == 'auto' %}selected{% endif %}" data-theme="auto">
+                            <div class="theme-preview theme-auto"></div>
+                            <h4>Automatique</h4>
+                            <p>Suivra les préférences système</p>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" id="theme" name="theme" value="{{ current_user.theme or 'light' }}">
+                </div>
+
+                <div class="settings-section">
+                    <h2 class="section-title"><i class="fas fa-font"></i> Personnalisation de l'interface</h2>
+                    
+                    <div class="form-group">
+                        <label for="font_size" class="form-label">Taille de police</label>
+                        <select id="font_size" name="font_size" class="form-control">
+                            <option value="small">Petite</option>
+                            <option value="medium" selected>Moyenne</option>
+                            <option value="large">Grande</option>
+                            <option value="xlarge">Très grande</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message_density" class="form-label">Densité des messages</label>
+                        <select id="message_density" name="message_density" class="form-control">
+                            <option value="compact">Compact</option>
+                            <option value="comfortable" selected>Confortable</option>
+                            <option value="spacious">Spacieux</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h2 class="section-title"><i class="fas fa-image"></i> Arrière-plan du chat</h2>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; margin-top: 20px;">
+                        {% for i in range(6) %}
+                        <div class="theme-option">
+                            <div class="theme-preview" style="background: linear-gradient(135deg, 
+                                {{ ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#00f2fe', '#43e97b'][i] }}, 
+                                {{ ['#764ba2', '#f093fb', '#4facfe', '#00f2fe', '#43e97b', '#667eea'][i] }});">
+                            </div>
+                            <h4 style="font-size: 14px; margin-top: 10px;">Dégradé {{ i+1 }}</h4>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Onglet Langue -->
+            <div id="language-tab" class="settings-tab-content" style="display: none;">
+                <div class="settings-section">
+                    <h2 class="section-title"><i class="fas fa-language"></i> Langue de l'interface</h2>
+                    <p style="color: #a0a0c0; margin-bottom: 20px;">
+                        Choisissez la langue dans laquelle s'affichera l'interface de MISPA.
+                    </p>
+                    
+                    <div class="language-grid">
+                        {% for code, name in config.SUPPORTED_LANGUAGES.items() %}
+                        <div class="language-option {% if current_user.language == code %}selected{% endif %}" 
+                             data-language="{{ code }}">
+                            <div class="language-flag">
+                                {{ code|upper }}
+                            </div>
+                            <div class="language-info">
+                                <div class="language-name">{{ name }}</div>
+                                <div class="language-code">{{ code }}</div>
+                            </div>
+                            {% if current_user.language == code %}
+                            <i class="fas fa-check" style="color: #667eea;"></i>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <input type="hidden" id="language" name="language" value="{{ current_user.language or 'fr' }}">
+                </div>
+
+                <div class="settings-section">
+                    <h2 class="section-title"><i class="fas fa-cogs"></i> Paramètres de traduction</h2>
+                    
+                    <div class="toggle-label">
+                        <div class="toggle-text">
+                            <h4>Traduction automatique</h4>
+                            <p>Traduire automatiquement les messages entrants</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="auto_translate" name="auto_translate" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-label">
+                        <div class="toggle-text">
+                            <h4>Prévisualisation de la traduction</h4>
+                            <p>Voir la traduction avant d'envoyer un message</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="translation_preview" name="translation_preview" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 20px;">
+                        <label for="default_target_language" class="form-label">Langue de traduction par défaut</label>
+                        <select id="default_target_language" name="default_target_language" class="form-control">
+                            {% for code, name in config.SUPPORTED_LANGUAGES.items() %}
+                                <option value="{{ code }}" {% if code == 'en' %}selected{% endif %}>{{ name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bouton de sauvegarde -->
+            <div style="text-align: center; margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="fas fa-save"></i> Sauvegarder les changements
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="resetForm()" style="margin-left: 15px;">
+                    <i class="fas fa-undo"></i> Annuler
+                </button>
+            </div>
+        </form>
+
+        <!-- Zone de danger -->
+        <div class="danger-zone">
+            <h3><i class="fas fa-exclamation-triangle"></i> Zone de danger</h3>
+            <p>Ces actions sont irréversibles. Soyez certain de ce que vous faites.</p>
+            
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <button type="button" class="btn btn-danger" onclick="confirmAction('delete_account')">
+                    <i class="fas fa-user-slash"></i> Supprimer mon compte
+                </button>
+                <button type="button" class="btn btn-danger" onclick="confirmAction('clear_data')">
+                    <i class="fas fa-trash-alt"></i> Effacer toutes mes données
+                </button>
+                <button type="button" class="btn btn-danger" onclick="confirmAction('export_data')">
+                    <i class="fas fa-download"></i> Exporter mes données
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Gestion des onglets
+document.addEventListener('DOMContentLoaded', function() {
+    const tabs = document.querySelectorAll('.settings-tab');
+    const tabContents = document.querySelectorAll('.settings-tab-content');
+    
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            const tabId = this.dataset.tab;
+            
+            // Mettre à jour les onglets actifs
+            tabs.forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Afficher le contenu correspondant
+            tabContents.forEach(content => content.style.display = 'none');
+            document.getElementById(`${tabId}-tab`).style.display = 'block';
+        });
+    });
+    
+    // Gestion des langues
+    const languageOptions = document.querySelectorAll('.language-option');
+    languageOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            const language = this.dataset.language;
+            
+            languageOptions.forEach(opt => opt.classList.remove('selected'));
+            this.classList.add('selected');
+            
+            document.getElementById('language').value = language;
+        });
+    });
+    
+    // Gestion des thèmes
+    const themeOptions = document.querySelectorAll('.theme-option');
+    themeOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            const theme = this.dataset.theme;
+            
+            themeOptions.forEach(opt => opt.classList.remove('selected'));
+            this.classList.add('selected');
+            
+            document.getElementById('theme').value = theme;
+        });
+    });
+    
+    // Prévisualisation de l'image
+    window.previewImage = function(event) {
+        const reader = new FileReader();
+        const preview = document.getElementById('avatarPreview');
+        
+        reader.onload = function() {
+            preview.innerHTML = `<img src="${reader.result}" alt="Avatar">`;
+        };
+        
+        if (event.target.files[0]) {
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    };
+    
+    // Réinitialiser l'avatar
+    window.resetAvatar = function() {
+        const preview = document.getElementById('avatarPreview');
+        const username = '{{ current_user.username }}';
+        preview.innerHTML = username[0].toUpperCase();
+        
+        // Réinitialiser le champ de fichier
+        const fileInput = document.getElementById('profile_picture');
+        fileInput.value = '';
+    };
+    
+    // Changer le mot de passe
+    window.changePassword = function() {
+        const currentPass = document.getElementById('current_password').value;
+        const newPass = document.getElementById('new_password').value;
+        const confirmPass = document.getElementById('confirm_new_password').value;
+        
+        if (!currentPass || !newPass || !confirmPass) {
+            alert('Veuillez remplir tous les champs du mot de passe.');
+            return;
+        }
+        
+        if (newPass !== confirmPass) {
+            alert('Les nouveaux mots de passe ne correspondent pas.');
+            return;
+        }
+        
+        if (newPass.length < 8) {
+            alert('Le mot de passe doit contenir au moins 8 caractères.');
+            return;
+        }
+        
+        // Ici, vous enverriez la requête au serveur
+        alert('Mot de passe changé avec succès !');
+        
+        // Réinitialiser les champs
+        document.getElementById('current_password').value = '';
+        document.getElementById('new_password').value = '';
+        document.getElementById('confirm_new_password').value = '';
+    };
+    
+    // Confirmer les actions dangereuses
+    window.confirmAction = function(action) {
+        const messages = {
+            'delete_account': 'Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible et toutes vos données seront perdues.',
+            'clear_data': 'Êtes-vous sûr de vouloir effacer toutes vos données ? Tous vos messages, contacts et fichiers seront définitivement supprimés.',
+            'export_data': 'Voulez-vous exporter toutes vos données ? Un fichier contenant tous vos messages, contacts et informations sera généré.'
+        };
+        
+        if (confirm(messages[action])) {
+            if (action === 'export_data') {
+                alert('Exportation des données en cours... Cela peut prendre quelques minutes.');
+                // Simulation d'export
+                setTimeout(() => {
+                    alert('Exportation terminée ! Votre fichier de données est prêt.');
+                }, 2000);
+            } else {
+                alert('Cette fonctionnalité sera bientôt disponible.');
+            }
+        }
+    };
+    
+    // Réinitialiser le formulaire
+    window.resetForm = function() {
+        if (confirm('Voulez-vous annuler tous les changements non sauvegardés ?')) {
+            location.reload();
+        }
+    };
+});
+</script>
+{% endblock %}

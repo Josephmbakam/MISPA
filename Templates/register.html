@@ -1,0 +1,522 @@
+{% extends "base.html" %}
+
+{% block title %}Inscription - MISPA 7.0{% endblock %}
+
+{% block extra_css %}
+<style>
+    .auth-container {
+         max-width: 500px;
+        margin: 30px auto;
+        padding: 40px;
+        background: rgba(30, 35, 50, 0.7);
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
+
+    .auth-title {
+        text-align: center;
+        margin-bottom: 30px;
+        color: white;
+        font-size: 28px;
+    }
+
+    .auth-logo {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .logo-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+        font-size: 40px;
+        color: white;
+    }
+
+    .auth-footer {
+        text-align: center;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        color: #a0a0c0;
+    }
+
+    .auth-footer a {
+        color: #667eea;
+        text-decoration: none;
+        margin-left: 5px;
+    }
+
+    .auth-footer a:hover {
+        text-decoration: underline;
+    }
+
+/* Styles pour tous les champs de formulaire */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    color: white;
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.form-group label i {
+    margin-right: 8px;
+    width: 16px;
+    text-align: center;
+}
+
+/* Styles pour les inputs texte, email, password */
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"] {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.password-strength {
+        margin-top: 5px;
+        height: 5px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+        overflow: hidden;
+    }
+
+.password-strength-bar {
+        height: 100%;
+        width: 0%;
+        transition: width 0.3s;
+        border-radius: 3px;
+    }
+
+    .strength-weak {
+        background: #e74c3c;
+    }
+
+    .strength-medium {
+        background: #f39c12;
+    }
+
+    .strength-strong {
+        background: #2ecc71;
+    }
+
+        .password-requirements {
+        font-size: 12px;
+        color: #a0a0c0;
+        margin-top: 5px;
+    }
+
+
+
+/* Style pour le select (pays) */
+.form-group select {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    background-size: 16px;
+    padding-right: 40px;
+}
+
+/* Styles pour les placeholders */
+.form-group input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Style pour le select quand il n'y a pas de sélection */
+.form-group select:invalid {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Styles au focus */
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* Styles au survol */
+.form-group input:hover,
+.form-group select:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.07);
+}
+
+/* Styles pour les options du select */
+.form-group select option {
+    background: rgba(30, 35, 50, 0.95);
+    color: white;
+    padding: 10px;
+}
+
+/* Style pour les inputs en erreur */
+.form-group input.error,
+.form-group select.error {
+    border-color: #e74c3c;
+    background: rgba(231, 76, 60, 0.05);
+}
+
+/* Style pour les inputs valides */
+.form-group input.valid,
+.form-group select.valid {
+    border-color: #2ecc71;
+}
+
+/* Style spécifique pour les champs dans form-row */
+.form-row .form-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+/* Media query pour mobile */
+@media (max-width: 768px) {
+    .form-row .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="password"],
+    .form-group select {
+        padding: 10px 14px;
+        font-size: 16px; /* Augmenter la taille pour mobile */
+    }
+}
+
+/* Styles pour le bouton de soumission */
+.btn-primary {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: none;
+    color: white;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* Styles pour la checkbox */
+.form-check {
+    display: flex;
+    align-items: flex-start;
+    margin: 25px 0;
+    color: #a0a0c0;
+    font-size: 14px;
+}
+
+.form-check-input {
+    margin-right: 10px;
+    margin-top: 3px;
+    cursor: pointer;
+    accent-color: #667eea;
+}
+
+.form-check-label a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+.form-check-label a:hover {
+    text-decoration: underline;
+}
+
+    @media (max-width: 768px) {
+        .form-row {
+            flex-direction: column;
+            gap: 0;
+        }
+    }
+    /* Footer */
+       .login-footer {
+           background: rgba(10, 14, 23, 0.9);
+           padding: 30px 40px;
+           border-top: 1px solid rgba(255, 255, 255, 0.1);
+           text-align: center;
+       }
+       .copyright-login {
+           color: #a0a0c0;
+           font-size: 14px;
+       }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+   <a href="{{ url_for('index') }}" class="back-home">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+</div>
+<div class="auth-container">
+    <div class="auth-logo">
+        <div class="logo-icon">
+            <i class="fas fa-comments"></i>
+        </div>
+        <h1 class="auth-title">Créer un compte</h1>
+    </div>
+
+    <form method="POST" action="{{ url_for('register') }}" id="registerForm">
+         <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName"><i class="fas fa-user"></i> Prénom *</label>
+                        <input type="text" id="firstName" name="firstName" placeholder="Joseph" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="lastName"><i class="fas fa-user"></i> Nom *</label>
+                        <input type="text" id="lastName" name="lastName" placeholder="Mbakam" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email"><i class="fas fa-envelope"></i> Email *</label>
+                    <input type="email" id="email" name="email" placeholder="vous@exemple.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="username"><i class="fas fa-at"></i> Nom d'utilisateur *</label>
+                    <input type="text" id="username" name="username" placeholder="@mbajo7" required>
+                </div>
+
+                        <div class="form-group">
+                    <label for="country"><i class="fas fa-globe"></i> Pays</label>
+                    <select id="country" name="country">
+                        <option value="">Sélectionnez votre pays</option>
+                        <option value="FR">France</option>
+                        <option value="BE">Belgique</option>
+                        <option value="CH">Suisse</option>
+                        <option value="CA">Canada</option>
+                        <option value="RU">Russie</option>
+                        <option value="CM">Cameroun</option>
+                        <option value="IN">Inde</option>
+                        <option value="GER">Allemagne</option>
+                        <option value="ES">Espagne</option>
+                        <option value="BF">Burkina Faso</option>
+                        <option value="MA">Maroc</option>
+                        <option value="CV">Cap-Vert</option>
+                        <option value="KOR">Corée du Sud</option>
+                        <option value="JAP">Japon</option>
+                        <option value="AL">Albanie</option>
+                        <option value="NOR">Norvège</option>
+                        <option value="IT">Italie</option>
+                        <option value="AU">Australie</option>
+                        <option value="NG">Nigeria</option>
+                        <option value="GH">Ghana</option>
+                        <option value="PH">Philippines</option>
+                        <option value="SE">Suède</option>
+                        <option value="COL">Colombie</option>
+                        <option value="AR">Argentine</option>
+                        <option value="TUR">Turquie</option>
+                        <option value="NER">Niger</option>
+                        <option value="MAL">MALI</option>
+                        <option value="other">Autre</option>
+                    </select>
+                </div>
+                
+
+        <div class="form-row">
+            <div class="form-group" style="flex: 1;">
+                <label for="password" class="form-label">
+                    <i class="fas fa-lock"></i> Mot de passe
+                </label>
+                <input type="password" id="password" name="password" class="form-control" 
+                       placeholder="Créez un mot de passe" required>
+                <div class="password-strength">
+                    <div class="password-strength-bar" id="passwordStrengthBar"></div>
+                </div>
+                <div class="password-requirements" id="passwordRequirements">
+                    Le mot de passe doit contenir au moins 8 caractères
+                </div>
+            </div>
+
+            <div class="form-group" style="flex: 1;">
+                <label for="confirm_password" class="form-label">
+                    <i class="fas fa-lock"></i> Confirmer le mot de passe
+                </label>
+                <input type="password" id="confirm_password" name="confirm_password" class="form-control" 
+                       placeholder="Confirmez le mot de passe" required>
+                <div id="passwordMatch" style="margin-top: 5px;"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="language" class="form-label">
+                <i class="fas fa-language"></i> Langue préférée
+            </label>
+            <select id="language" name="language" class="form-control">
+                {% for code, name in config.SUPPORTED_LANGUAGES.items() %}
+                    <option value="{{ code }}" {% if code == 'fr' %}selected{% endif %}>{{ name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-check">
+            <input type="checkbox" id="terms" name="terms" class="form-check-input" required>
+            <label for="terms" class="form-check-label">
+                J'accepte les <a href="#" style="color: #667eea;">conditions d'utilisation</a> et la 
+                <a href="#" style="color: #667eea;">politique de confidentialité</a>
+            </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px;">
+            <i class="fas fa-user-plus"></i> Créer mon compte
+        </button>
+    </form>
+
+    <div class="auth-footer">
+        Déjà un compte ? 
+        <a href="{{ url_for('login') }}">Se connecter</a>
+    </div>
+</div>
+
+<!-- Footer -->
+    <footer class="login-footer">
+        <div class="copyright-login">
+            <p>&copy; 2024 MISPA 7.0 - Messagerie Intelligente Sans Frontières. Tous droits réservés.</p>
+            <p style="margin-top: 10px;">
+                <a href="privacy.html" style="color: #667eea; text-decoration: none;">Confidentialité</a> • 
+                <a href="terms.html" style="color: #667eea; text-decoration: none;">Conditions</a> • 
+                <a href="cookies.html" style="color: #667eea; text-decoration: none;">Cookies</a>
+            </p>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirm_password');
+    const strengthBar = document.getElementById('passwordStrengthBar');
+    const requirementsText = document.getElementById('passwordRequirements');
+    const passwordMatch = document.getElementById('passwordMatch');
+
+    function checkPasswordStrength(password) {
+        let strength = 0;
+        let requirements = [];
+
+        if (password.length >= 8) {
+            strength += 25;
+        } else {
+            requirements.push('Au moins 8 caractères');
+        }
+
+        if (/[A-Z]/.test(password)) {
+            strength += 25;
+        } else {
+            requirements.push('Une majuscule');
+        }
+
+        if (/[a-z]/.test(password)) {
+            strength += 25;
+        } else {
+            requirements.push('Une minuscule');
+        }
+
+        if (/[0-9]/.test(password)) {
+            strength += 25;
+        } else {
+            requirements.push('Un chiffre');
+        }
+
+        if (/[^A-Za-z0-9]/.test(password)) {
+            strength += 25;
+        } else {
+            requirements.push('Un caractère spécial');
+        }
+
+        // Limiter à 100%
+        strength = Math.min(strength, 100);
+
+        // Mettre à jour la barre de force
+        strengthBar.style.width = strength + '%';
+        
+        // Changer la couleur selon la force
+        if (strength < 50) {
+            strengthBar.className = 'password-strength-bar strength-weak';
+            requirementsText.textContent = 'Faible: ' + requirements.join(', ');
+        } else if (strength < 75) {
+            strengthBar.className = 'password-strength-bar strength-medium';
+            requirementsText.textContent = 'Moyen: ' + requirements.join(', ');
+        } else {
+            strengthBar.className = 'password-strength-bar strength-strong';
+            requirementsText.textContent = 'Fort - Bon mot de passe !';
+        }
+
+        return strength;
+    }
+
+    function checkPasswordMatch() {
+        if (passwordInput.value && confirmPasswordInput.value) {
+            if (passwordInput.value === confirmPasswordInput.value) {
+                passwordMatch.innerHTML = '<span style="color:#2ecc71;"><i class="fas fa-check"></i> Les mots de passe correspondent</span>';
+                return true;
+            } else {
+                passwordMatch.innerHTML = '<span style="color:#e74c3c;"><i class="fas fa-times"></i> Les mots de passe ne correspondent pas</span>';
+                return false;
+            }
+        }
+        return null;
+    }
+
+    passwordInput.addEventListener('input', function() {
+        checkPasswordStrength(this.value);
+        checkPasswordMatch();
+    });
+
+    confirmPasswordInput.addEventListener('input', checkPasswordMatch);
+
+    // Validation du formulaire
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+        if (!checkPasswordMatch()) {
+            e.preventDefault();
+            alert('Veuillez confirmer correctement votre mot de passe.');
+            return false;
+        }
+
+        if (checkPasswordStrength(passwordInput.value) < 50) {
+            e.preventDefault();
+            alert('Votre mot de passe est trop faible. Veuillez renforcer votre mot de passe.');
+            return false;
+        }
+    });
+});
+</script>
+{% endblock %}

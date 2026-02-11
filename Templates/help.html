@@ -1,0 +1,441 @@
+{% extends "base.html" %}
+
+{% block title %}Aide - MISPA 7.0{% endblock %}
+
+{% block extra_css %}
+<style>
+    .help-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 30px;
+    }
+
+    .help-header {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    .help-header h1 {
+        font-size: 36px;
+        margin-bottom: 15px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .help-header p {
+        color: #a0a0c0;
+        font-size: 18px;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .search-box {
+        max-width: 500px;
+        margin: 40px auto;
+        position: relative;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 15px 50px 15px 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        color: white;
+        font-size: 16px;
+    }
+
+    .search-input:focus {
+        outline: none;
+        border-color: #667eea;
+    }
+
+    .search-icon {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #667eea;
+    }
+
+    .help-categories {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin: 40px 0;
+    }
+
+    .help-category {
+        background: rgba(30, 35, 50, 0.7);
+        border-radius: 16px;
+        padding: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s;
+        cursor: pointer;
+    }
+
+    .help-category:hover {
+        transform: translateY(-5px);
+        border-color: #667eea;
+    }
+
+    .category-icon {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: white;
+    }
+
+    .help-category h3 {
+        font-size: 20px;
+        margin-bottom: 15px;
+        color: white;
+    }
+
+    .help-category p {
+        color: #a0a0c0;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    .faq-section {
+        margin: 60px 0;
+    }
+
+    .faq-title {
+        text-align: center;
+        margin-bottom: 40px;
+        font-size: 28px;
+        color: white;
+    }
+
+    .faq-item {
+        background: rgba(30, 35, 50, 0.7);
+        border-radius: 12px;
+        margin-bottom: 15px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .faq-question {
+        padding: 20px;
+        font-weight: 600;
+        font-size: 16px;
+        color: white;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .faq-question:hover {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .faq-answer {
+        padding: 0 20px;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.3s;
+        color: #a0a0c0;
+        line-height: 1.6;
+    }
+
+    .faq-item.active .faq-answer {
+        padding: 0 20px 20px;
+        max-height: 500px;
+    }
+
+    .contact-support {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        border-radius: 16px;
+        padding: 40px;
+        text-align: center;
+        margin-top: 60px;
+        border: 1px solid rgba(102, 126, 234, 0.3);
+    }
+
+    .contact-support h2 {
+        font-size: 28px;
+        margin-bottom: 20px;
+        color: white;
+    }
+
+    .contact-support p {
+        color: #a0a0c0;
+        margin-bottom: 30px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .contact-methods {
+        display: flex;
+        gap: 30px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .contact-method {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 12px;
+        min-width: 150px;
+        text-decoration: none;
+        color: white;
+        transition: all 0.3s;
+    }
+
+    .contact-method:hover {
+        background: rgba(102, 126, 234, 0.2);
+        transform: translateY(-5px);
+    }
+
+    .contact-method i {
+        font-size: 24px;
+        color: #667eea;
+    }
+
+    @media (max-width: 768px) {
+        .help-categories {
+            grid-template-columns: 1fr;
+        }
+
+        .contact-methods {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .contact-method {
+            width: 100%;
+            max-width: 300px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="help-container">
+    <div class="help-header">
+        <h1>Centre d'aide MISPA 7.0</h1>
+        <p>Trouvez des réponses à vos questions et apprenez à utiliser toutes les fonctionnalités</p>
+        
+        <div class="search-box">
+            <input type="text" class="search-input" placeholder="Rechercher dans l'aide...">
+            <i class="fas fa-search search-icon"></i>
+        </div>
+    </div>
+
+    <div class="help-categories">
+        <div class="help-category" onclick="showCategory('getting-started')">
+            <div class="category-icon">
+                <i class="fas fa-rocket"></i>
+            </div>
+            <h3>Commencer</h3>
+            <p>Guide de démarrage rapide pour utiliser MISPA pour la première fois</p>
+            <a href="#" style="color: #667eea; text-decoration: none;">
+                En savoir plus <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="help-category" onclick="showCategory('translation')">
+            <div class="category-icon">
+                <i class="fas fa-language"></i>
+            </div>
+            <h3>Traduction</h3>
+            <p>Tout sur notre technologie de traduction instantanée</p>
+            <a href="#" style="color: #667eea; text-decoration: none;">
+                En savoir plus <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="help-category" onclick="showCategory('security')">
+            <div class="category-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3>Sécurité & Confidentialité</h3>
+            <p>Protection de vos données et paramètres de sécurité</p>
+            <a href="#" style="color: #667eea; text-decoration: none;">
+                En savoir plus <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="faq-section">
+        <h2 class="faq-title">Questions Fréquentes</h2>
+        
+        <div class="faq-item">
+            <div class="faq-question">
+                Comment fonctionne la traduction instantanée ?
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>MISPA utilise la technologie MBAJO 7.0 pour traduire vos messages en temps réel. Lorsque vous envoyez un message à quelqu'un qui parle une autre langue, le message est automatiquement traduit dans sa langue natale. La traduction se fait de manière transparente, en conservant le contexte et les émotions du message original.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                Comment ajouter un contact ?
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Pour ajouter un contact :</p>
+                <ol>
+                    <li>Allez dans l'onglet "Contacts"</li>
+                    <li>Cliquez sur "Rechercher des utilisateurs"</li>
+                    <li>Tapez le nom d'utilisateur ou l'email de la personne</li>
+                    <li>Cliquez sur "Ajouter au contacts" à côté du profil</li>
+                    <li>La personne recevra une demande de contact à approuver</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                Comment activer l'authentification à deux facteurs ?
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Pour activer la 2FA :</p>
+                <ol>
+                    <li>Allez dans "Paramètres"</li>
+                    <li>Activez l'option "Authentification à deux facteurs"</li>
+                    <li>Scannez le QR code avec votre application d'authentification (Google Authenticator, Authy, etc.)</li>
+                    <li>Entrez le code à 6 chiffres pour vérifier</li>
+                    <li>Sauvegardez vos codes de récupération dans un endroit sûr</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                Comment envoyer des fichiers ou photos ?
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Pour envoyer des fichiers :</p>
+                <ul>
+                    <li>Dans une conversation, cliquez sur l'icône trombone 📎</li>
+                    <li>Sélectionnez le type de fichier (image, document, etc.)</li>
+                    <li>Choisissez le fichier depuis votre appareil</li>
+                    <li>Le fichier sera automatiquement téléchargé et envoyé</li>
+                </ul>
+                <p><strong>Formats supportés :</strong> Images (JPG, PNG, GIF), Documents (PDF, DOC), Vidéos (MP4), Audio (MP3)</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                Comment créer un groupe ?
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Pour créer un groupe :</p>
+                <ol>
+                    <li>Cliquez sur l'icône "Nouveau groupe" dans la barre latérale</li>
+                    <li>Donnez un nom à votre groupe</li>
+                    <li>Ajoutez des contacts depuis votre liste</li>
+                    <li>Configurez les paramètres du groupe (photo, description)</li>
+                    <li>Cliquez sur "Créer le groupe"</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div class="contact-support">
+        <h2>Besoin d'aide supplémentaire ?</h2>
+        <p>Notre équipe de support est disponible 24h/24 pour vous aider</p>
+        
+        <div class="contact-methods">
+            <a href="mailto:support@mispa.com" class="contact-method">
+                <i class="fas fa-envelope"></i>
+                <span>Email</span>
+                <small>support@mispa.com</small>
+            </a>
+            
+            <a href="#" class="contact-method" onclick="openOmniAssistant()">
+                <i class="fas fa-robot"></i>
+                <span>Assistant IA</span>
+                <small>Omni7.0</small>
+            </a>
+            
+            <a href="#" class="contact-method">
+                <i class="fas fa-comments"></i>
+                <span>Chat en direct</span>
+                <small>24/7</small>
+            </a>
+            
+            <a href="#" class="contact-method">
+                <i class="fas fa-phone"></i>
+                <span>Téléphone</span>
+                <small>+1 234 567 890</small>
+            </a>
+        </div>
+    </div>
+    <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">
+            <i class="fas fa-home"></i> Page d'Accueil
+        </a>
+        <a href="{{ url_for('contact') }}" class="btn btn-primary">
+            <i class="fas fa-headset"></i> Contacter le Support
+        </a>
+    </div>
+</div>
+
+<script>
+function showCategory(category) {
+    // Ici, vous pourriez charger le contenu de la catégorie
+    alert(`Affichage de la catégorie: ${category}`);
+    // Dans une version complète, cela chargerait le contenu via AJAX
+}
+
+function openOmniAssistant() {
+    // Ouvrir l'assistant Omni
+    alert("Ouverture de l'assistant IA Omni7.0...");
+    // window.open('/chat?assistant=true', '_blank');
+}
+
+// FAQ interactif
+document.addEventListener('DOMContentLoaded', function() {
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    
+    faqQuestions.forEach(question => {
+        question.addEventListener('click', function() {
+            const faqItem = this.parentElement;
+            faqItem.classList.toggle('active');
+            
+            // Fermer les autres FAQ
+            document.querySelectorAll('.faq-item').forEach(item => {
+                if (item !== faqItem) {
+                    item.classList.remove('active');
+                }
+            });
+        });
+    });
+    
+    // Recherche dans l'aide
+    const searchInput = document.querySelector('.search-input');
+    searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        
+        // Ici, vous pourriez implémenter une recherche en temps réel
+        if (searchTerm.length > 2) {
+            console.log(`Recherche: ${searchTerm}`);
+            // Implémenter la logique de recherche ici
+        }
+    });
+});
+</script>
+{% endblock %}

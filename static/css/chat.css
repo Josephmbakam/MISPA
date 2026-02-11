@@ -1,0 +1,44 @@
+/* Chat-specific styles that complement base.html */
+body.dark .navbar {
+    background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+}
+
+body.dark .nav-link.sign-out {
+    border-color: var(--text-primary);
+    color: var(--text-primary);
+}
+
+body.dark .nav-link.sign-out:hover {
+    background: var(--text-primary);
+    color: var(--bg-primary);
+}
+
+/* Ensure chat takes full height */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+#chat-container {
+    height: calc(100vh - 70px);
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0.8rem 1rem;
+    }
+    
+    .nav-links {
+        gap: 0.5rem;
+    }
+    
+    .nav-link {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+    }
+    
+    .logo-text {
+        font-size: 1.1rem;
+    }
+}

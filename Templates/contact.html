@@ -1,0 +1,566 @@
+{% extends "base.html" %}
+
+{% block title %}Contact - MISPA 7.0{% endblock %}
+
+{% block extra_css %}
+<style>
+    .contact-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 30px;
+    }
+
+    .contact-header {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    .contact-header h1 {
+        font-size: 48px;
+        margin-bottom: 20px;
+        background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .contact-header p {
+        font-size: 20px;
+        color: #b0b0d0;
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+
+    .contact-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 40px;
+        margin: 60px 0;
+    }
+
+    .contact-form {
+        background: rgba(30, 35, 50, 0.7);
+        border-radius: 16px;
+        padding: 40px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .contact-form h2 {
+        font-size: 28px;
+        margin-bottom: 30px;
+        color: white;
+    }
+
+    .form-row {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        flex: 1;
+    }
+
+    .contact-info {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        border-radius: 16px;
+        padding: 40px;
+        border: 1px solid rgba(102, 126, 234, 0.3);
+    }
+
+    .contact-info h2 {
+        font-size: 28px;
+        margin-bottom: 30px;
+        color: white;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .info-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: white;
+        flex-shrink: 0;
+    }
+
+    .info-content h3 {
+        font-size: 20px;
+        margin-bottom: 10px;
+        color: white;
+    }
+
+    .info-content p {
+        color: #a0a0c0;
+        line-height: 1.6;
+        margin-bottom: 5px;
+    }
+
+    .info-content a {
+        color: #667eea;
+        text-decoration: none;
+    }
+
+    .info-content a:hover {
+        text-decoration: underline;
+    }
+
+    .team-section {
+        margin: 80px 0;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 40px;
+        font-size: 32px;
+        color: white;
+    }
+
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+    }
+
+    .team-card {
+        background: rgba(30, 35, 50, 0.7);
+        border-radius: 16px;
+        padding: 30px;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s;
+    }
+
+    .team-card:hover {
+        transform: translateY(-10px);
+        border-color: #667eea;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .team-avatar {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 40px;
+        color: white;
+    }
+
+    .team-card h4 {
+        font-size: 22px;
+        color: white;
+        margin-bottom: 10px;
+    }
+
+    .team-role {
+        color: #667eea;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    .team-bio {
+        color: #a0a0c0;
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .social-link {
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+
+    .social-link:hover {
+        background: #667eea;
+        transform: translateY(-3px);
+    }
+
+    .map-section {
+        margin: 80px 0;
+        border-radius: 16px;
+        overflow: hidden;
+        height: 400px;
+        background: rgba(30, 35, 50, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .map-placeholder {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: white;
+    }
+
+    .map-placeholder i {
+        font-size: 60px;
+        margin-bottom: 20px;
+        color: #667eea;
+    }
+
+    .faq-section {
+        background: rgba(20, 25, 40, 0.7);
+        border-radius: 16px;
+        padding: 50px;
+        margin: 80px 0;
+    }
+
+    .faq-item {
+        margin-bottom: 30px;
+        padding-bottom: 30px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .faq-item:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+
+    .faq-question {
+        font-size: 20px;
+        color: white;
+        margin-bottom: 15px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .faq-answer {
+        color: #a0a0c0;
+        line-height: 1.6;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+    }
+
+    .faq-item.active .faq-answer {
+        max-height: 500px;
+    }
+
+    @media (max-width: 768px) {
+        .form-row {
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .contact-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .faq-section {
+            padding: 30px 20px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="contact-container">
+    <div class="contact-header">
+        <h1>Contactez-nous</h1>
+        <p>Nous sommes là pour vous aider. N'hésitez pas à nous contacter pour toute question, suggestion ou problème.</p>
+    </div>
+
+    <div class="contact-grid">
+        <div class="contact-form">
+            <h2>Envoyez-nous un message</h2>
+            <form id="contactForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name" class="form-label">Nom complet</label>
+                        <input type="text" id="name" class="form-control" placeholder="Votre nom" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="form-label">Adresse email</label>
+                        <input type="email" id="email" class="form-control" placeholder="votre@email.com" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject" class="form-label">Sujet</label>
+                    <input type="text" id="subject" class="form-control" placeholder="Sujet de votre message" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea id="message" class="form-control" rows="6" placeholder="Décrivez votre question ou problème..." required></textarea>
+                </div>
+
+                <div class="form-check" style="margin: 20px 0;">
+                    <input type="checkbox" id="newsletter" class="form-check-input">
+                    <label for="newsletter" class="form-check-label">
+                        Je souhaite recevoir les newsletters et mises à jour de MISPA
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-paper-plane"></i> Envoyer le message
+                </button>
+            </form>
+        </div>
+
+        <div class="contact-info">
+            <h2>Informations de contact</h2>
+            
+            <div class="info-item">
+                <div class="info-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="info-content">
+                    <h3>Email</h3>
+                    <p><a href="mailto:support@mispa.com">support@mispa.com</a></p>
+                    <p><a href="mailto:contact@mispa.com">contact@mispa.com</a></p>
+                    <small style="color: #a0a0c0;">Réponse sous 24 heures</small>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-icon">
+                    <i class="fas fa-phone"></i>
+                </div>
+                <div class="info-content">
+                    <h3>Téléphone</h3>
+                    <p><a href="tel:+1234567890">+33 616 238 087</a></p>
+                    <p><a href="tel:+0987654321">+237 680 372 249</a></p>
+                    <small style="color: #a0a0c0;">Lun-Ven: 9h-17h30</small>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="info-content">
+                    <h3>Adresse</h3>
+                    <p>Rénovation, Pk8-Ndokotti</p>
+                    <p>777 Douala, Cameroun</p>
+                    <small style="color: #a0a0c0;">Visite sur rendez-vous uniquement</small>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <div class="info-content">
+                    <h3>Support en ligne</h3>
+                    <p><a href="{{ url_for('help_page') }}">Centre d'aide en ligne</a></p>
+                    <p><a href="#" onclick="openOmniAssistant()">Assistant IA Omni7.0</a></p>
+                    <small style="color: #a0a0c0;">Disponible 24h/24, 7j/7</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="team-section">
+        <h2 class="section-title">Notre équipe de support</h2>
+        <p style="text-align: center; color: #a0a0c0; max-width: 600px; margin: 0 auto 40px;">
+            Rencontrez notre équipe dédiée qui travaille dur pour vous offrir la meilleure expérience possible.
+        </p>
+        
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="team-avatar">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <h4>Sarah Nguijol</h4>
+                <p class="team-role">Responsable Support</p>
+                <p class="team-bio">Sarah s'assure que chaque utilisateur reçoit l'aide dont il a besoin rapidement et efficacement.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-link"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+
+            <div class="team-card">
+                <div class="team-avatar">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h4>Caleb Ewane</h4>
+                <p class="team-role">Support Technique</p>
+                <p class="team-bio">Caleb résout les problèmes techniques complexes et améliore constamment notre infrastructure.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                    <a href="#" class="social-link"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+
+            <div class="team-card">
+                <div class="team-avatar">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h4>Angele Nkom</h4>
+                <p class="team-role">Support Client</p>
+                <p class="team-bio">Angele aide les utilisateurs à naviguer dans l'application et répond à toutes leurs questions.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fas fa-envelope"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+
+            <div class="team-card">
+                <div class="team-avatar omni-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h4>Omni7.0</h4>
+                <p class="team-role">Assistant IA</p>
+                <p class="team-bio">Notre assistant IA qui vous aide 24h/24 avec des réponses instantanées et personnalisées.</p>
+                <div class="social-links">
+                    <a href="#" onclick="openOmniAssistant()" class="social-link"><i class="fas fa-comment"></i></a>
+                    <a href="{{ url_for('help_page') }}" class="social-link"><i class="fas fa-question-circle"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="map-section">
+        <div class="map-placeholder">
+            <i class="fas fa-map-marked-alt"></i>
+            <h3>Notre localisation</h3>
+            <p style="color: #a0a0c0; max-width: 400px; text-align: center; margin-top: 10px;">
+                Nous sommes basés à Paris, mais notre équipe travaille à distance dans le monde entier pour vous servir 24h/24.
+            </p>
+        </div>
+    </div>
+
+    <div class="faq-section">
+        <h2 class="section-title">Questions Fréquentes sur le Contact</h2>
+        
+        <div class="faq-item">
+            <div class="faq-question">
+                Quel est le temps de réponse moyen ?
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Nous nous efforçons de répondre à tous les emails dans les 24 heures ouvrables. Pour les questions urgentes, utilisez notre chat en direct ou contactez-nous par téléphone pendant les heures de bureau.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                Comment puis-je signaler un bug ou un problème technique ?
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Vous pouvez signaler les bugs via le formulaire de contact ci-dessus en sélectionnant "Problème technique" comme sujet. Incluez autant de détails que possible : étapes pour reproduire le bug, capture d'écran, système d'exploitation et version de l'application.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                Proposez-vous un support en plusieurs langues ?
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Oui ! Notre équipe de support parle français, anglais, espagnol, et allemand. Notre assistant IA Omni7.0 peut vous aider dans toutes les 25 langues supportées par l'application.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                Comment puis-je devenir partenaire ou collaborer avec MISPA ?
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Nous sommes toujours ouverts aux partenariats intéressants. Envoyez-nous un email à <a href="mailto:partnerships@mispa.com">partnerships@mispa.com</a> avec les détails de votre proposition de collaboration.</p>
+            </div>
+        </div>
+    </div>
+    <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+        <a href="{{ url_for('features') }}" class="btn btn-secondary">
+            <i class="fas fa-star"></i> Fonctionnalités
+        </a>
+        <a href="{{ url_for('index') }}" class="btn btn-primary">
+            <i class="fas fa-home"></i> Page d'Accueil
+        </a>
+    </div>
+</div>
+
+<script>
+function openOmniAssistant() {
+    alert("Ouverture de l'assistant IA Omni7.0...");
+    // Dans une version complète, cela ouvrirait l'assistant IA
+    // window.open('/chat?assistant=true', '_blank');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Gestion du formulaire de contact
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Récupérer les données du formulaire
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value,
+                newsletter: document.getElementById('newsletter').checked
+            };
+            
+            // Ici, vous enverriez les données au serveur
+            console.log('Données du formulaire:', formData);
+            
+            // Simulation d'envoi
+            setTimeout(() => {
+                alert('Merci pour votre message ! Nous vous répondrons dans les plus brefs délais.');
+                contactForm.reset();
+            }, 500);
+        });
+    }
+    
+    // FAQ interactif
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    faqQuestions.forEach(question => {
+        question.addEventListener('click', function() {
+            const faqItem = this.parentElement;
+            faqItem.classList.toggle('active');
+            
+            // Fermer les autres FAQ
+            document.querySelectorAll('.faq-item').forEach(item => {
+                if (item !== faqItem) {
+                    item.classList.remove('active');
+                }
+            });
+        });
+    });
+});
+</script>
+{% endblock %}

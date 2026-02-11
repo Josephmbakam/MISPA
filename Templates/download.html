@@ -1,0 +1,664 @@
+{% extends "base.html" %}
+
+{% block title %}Télécharger - MISPA 7.0{% endblock %}
+
+{% block extra_css %}
+<style>
+    .download-hero {
+        text-align: center;
+        padding: 100px 20px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        border-radius: 20px;
+        margin-bottom: 50px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .download-hero h1 {
+        font-size: 48px;
+        margin-bottom: 20px;
+        background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .download-hero p {
+        font-size: 20px;
+        color: #b0b0d0;
+        max-width: 600px;
+        margin: 0 auto 30px;
+        line-height: 1.6;
+    }
+
+    .platforms-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 40px;
+        margin: 60px 0;
+    }
+
+    .platform-card {
+        background: rgba(30, 35, 50, 0.7);
+        border-radius: 16px;
+        padding: 40px 30px;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s;
+        position: relative;
+    }
+
+    .platform-card:hover {
+        transform: translateY(-10px);
+        border-color: #667eea;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .platform-card.featured {
+        border: 2px solid #667eea;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.2));
+    }
+
+    .platform-icon {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 25px;
+        font-size: 40px;
+        color: white;
+    }
+
+    .platform-card h3 {
+        font-size: 28px;
+        margin-bottom: 15px;
+        color: white;
+    }
+
+    .platform-version {
+        color: #667eea;
+        font-weight: 600;
+        margin-bottom: 20px;
+        font-size: 16px;
+    }
+
+    .platform-desc {
+        color: #a0a0c0;
+        line-height: 1.6;
+        margin-bottom: 30px;
+        min-height: 60px;
+    }
+
+    .download-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 15px 30px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 16px;
+        transition: all 0.3s;
+        margin-bottom: 15px;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .download-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .download-btn.secondary {
+        background: transparent;
+        border: 2px solid #667eea;
+        color: #667eea;
+    }
+
+    .download-btn.secondary:hover {
+        background: rgba(102, 126, 234, 0.1);
+    }
+
+    .system-requirements {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: left;
+    }
+
+    .requirements-title {
+        font-size: 14px;
+        color: #667eea;
+        margin-bottom: 10px;
+        font-weight: 600;
+    }
+
+    .requirements-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .requirements-list li {
+        padding: 5px 0;
+        color: #a0a0c0;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .requirements-list li i {
+        color: #667eea;
+        font-size: 12px;
+    }
+
+    .features-comparison {
+        background: rgba(20, 25, 40, 0.7);
+        border-radius: 16px;
+        padding: 50px;
+        margin: 80px 0;
+        border: 1px solid rgba(102, 126, 234, 0.3);
+    }
+
+    .comparison-title {
+        text-align: center;
+        font-size: 32px;
+        margin-bottom: 40px;
+        color: white;
+    }
+
+    .comparison-grid {
+        display: grid;
+        grid-template-columns: 1fr repeat(3, 1.5fr);
+        gap: 1px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .comparison-cell {
+        background: rgba(10, 14, 23, 0.7);
+        padding: 20px;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 60px;
+    }
+
+    .comparison-header {
+        background: rgba(102, 126, 234, 0.2);
+        font-weight: 600;
+        font-size: 18px;
+    }
+
+    .comparison-feature {
+        text-align: left;
+        justify-content: flex-start;
+        color: #a0a0c0;
+    }
+
+    .comparison-check {
+        color: #2ecc71;
+        font-size: 20px;
+    }
+
+    .comparison-missing {
+        color: #e74c3c;
+        font-size: 20px;
+    }
+
+    .mobile-apps {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        margin: 60px 0;
+    }
+
+    .mobile-store {
+        background: rgba(30, 35, 50, 0.7);
+        border-radius: 16px;
+        padding: 30px;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s;
+    }
+
+    .mobile-store:hover {
+        transform: translateY(-5px);
+        border-color: #667eea;
+    }
+
+    .store-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 40px;
+        color: white;
+    }
+
+    .store-name {
+        font-size: 22px;
+        margin-bottom: 10px;
+        color: white;
+    }
+
+    .store-desc {
+        color: #a0a0c0;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+
+    .qr-code {
+        margin: 30px auto;
+        width: 150px;
+        height: 150px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 60px;
+        color: #667eea;
+    }
+
+    .install-guide {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        border-radius: 16px;
+        padding: 40px;
+        margin: 80px 0;
+        border: 1px solid rgba(102, 126, 234, 0.3);
+    }
+
+    .guide-title {
+        text-align: center;
+        font-size: 28px;
+        margin-bottom: 40px;
+        color: white;
+    }
+
+    .guide-steps {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 30px;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .guide-step {
+        text-align: center;
+    }
+
+    .step-number {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 24px;
+        font-weight: 600;
+        color: white;
+    }
+
+    .guide-step h4 {
+        font-size: 18px;
+        margin-bottom: 10px;
+        color: white;
+    }
+
+    .guide-step p {
+        color: #a0a0c0;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+        .comparison-grid {
+            grid-template-columns: 1fr;
+            display: none; /* Masquer le tableau sur mobile */
+        }
+        
+        .comparison-mobile {
+            display: block;
+        }
+
+        .mobile-apps {
+            grid-template-columns: 1fr;
+        }
+
+        .guide-steps {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .comparison-mobile {
+        display: none;
+    }
+
+    @media (max-width: 768px) {
+        .comparison-mobile {
+            display: block;
+        }
+        
+        .mobile-platform {
+            background: rgba(10, 14, 23, 0.7);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .mobile-platform h4 {
+            color: white;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .mobile-feature {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            color: #a0a0c0;
+        }
+        
+        .mobile-feature:last-child {
+            border-bottom: none;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="download-hero">
+    <h1>Télécharger MISPA 7.0</h1>
+    <p>Disponible sur toutes les plateformes. Choisissez celle qui correspond à vos besoins.</p>
+    <p style="font-size: 16px; color: #667eea;">
+        <i class="fas fa-sync-alt"></i> Synchronisation en temps réel entre tous vos appareils
+    </p>
+</section>
+
+<div class="platforms-section">
+    <!-- Application Web -->
+    <div class="platform-card featured">
+        <div class="platform-icon">
+            <i class="fas fa-globe"></i>
+        </div>
+        <h3>Application Web</h3>
+        <div class="platform-version">Version 7.0.1</div>
+        <p class="platform-desc">Utilisez MISPA directement dans votre navigateur sans installation.</p>
+        
+        <a href="{{ url_for('index') }}" class="download-btn">
+            <i class="fas fa-external-link-alt"></i> Utiliser Maintenant
+        </a>
+        
+        <div class="system-requirements">
+            <div class="requirements-title">Navigateurs Supportés</div>
+            <ul class="requirements-list">
+                <li><i class="fas fa-check"></i> Chrome 90+</li>
+                <li><i class="fas fa-check"></i> Firefox 88+</li>
+                <li><i class="fas fa-check"></i> Safari 14+</li>
+                <li><i class="fas fa-check"></i> Edge 90+</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Application Desktop -->
+    <div class="platform-card">
+        <div class="platform-icon">
+            <i class="fas fa-desktop"></i>
+        </div>
+        <h3>Application Desktop</h3>
+        <div class="platform-version">Version 7.0.0</div>
+        <p class="platform-desc">Version complète avec notifications natives et meilleures performances.</p>
+        
+        <a href="#" class="download-btn">
+            <i class="fab fa-windows"></i> Télécharger pour Windows
+        </a>
+        <a href="#" class="download-btn secondary">
+            <i class="fab fa-apple"></i> Télécharger pour macOS
+        </a>
+        <a href="#" class="download-btn secondary">
+            <i class="fab fa-linux"></i> Télécharger pour Linux
+        </a>
+        
+        <div class="system-requirements">
+            <div class="requirements-title">Configuration Requise</div>
+            <ul class="requirements-list">
+                <li><i class="fas fa-microchip"></i> 2GB RAM minimum</li>
+                <li><i class="fas fa-hdd"></i> 500MB espace disque</li>
+                <li><i class="fas fa-network-wired"></i> Connexion Internet</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Application Mobile -->
+    <div class="platform-card">
+        <div class="platform-icon">
+            <i class="fas fa-mobile-alt"></i>
+        </div>
+        <h3>Application Mobile</h3>
+        <div class="platform-version">Version 7.0.0</div>
+        <p class="platform-desc">Communiquez où que vous soyez avec notre application mobile optimisée.</p>
+        
+        <div class="mobile-apps">
+            <div class="mobile-store">
+                <div class="store-icon">
+                    <i class="fab fa-app-store-ios"></i>
+                </div>
+                <div class="store-name">App Store</div>
+                <p class="store-desc">Disponible sur iPhone et iPad</p>
+                <a href="#" class="download-btn">
+                    <i class="fab fa-apple"></i> App Store
+                </a>
+            </div>
+            
+            <div class="mobile-store">
+                <div class="store-icon">
+                    <i class="fab fa-google-play"></i>
+                </div>
+                <div class="store-name">Google Play</div>
+                <p class="store-desc">Disponible sur Android</p>
+                <a href="#" class="download-btn">
+                    <i class="fab fa-android"></i> Google Play
+                </a>
+            </div>
+        </div>
+        
+        <div class="qr-code">
+            <i class="fas fa-qrcode"></i>
+        </div>
+        <p style="color: #a0a0c0; font-size: 12px; text-align: center;">
+            Scannez avec votre téléphone pour télécharger
+        </p>
+    </div>
+</div>
+
+<div class="features-comparison">
+    <h2 class="comparison-title">Comparaison des Plateformes</h2>
+    
+    <!-- Version Desktop (visible sur ordinateur) -->
+    <div class="comparison-grid">
+        <div class="comparison-cell comparison-header">Fonctionnalité</div>
+        <div class="comparison-cell comparison-header">Web</div>
+        <div class="comparison-cell comparison-header">Desktop</div>
+        <div class="comparison-cell comparison-header">Mobile</div>
+        
+        <div class="comparison-cell comparison-feature">Traduction instantanée</div>
+        <div class="comparison-cell comparison-check"><i class="fas fa-check"></i></div>
+        <div class="comparison-cell comparison-check"><i class="fas fa-check"></i></div>
+        <div class="comparison-cell comparison-check"><i class="fas fa-check"></i></div>
+        
+        <div class="comparison-cell comparison-feature">Appels audio/vidéo</div>
+        <div class="comparison-cell comparison-check"><i class="fas fa-check"></i></div>
+        <div class="comparison-cell comparison-check"><i class="fas fa-check"></i></div>
+        <div class="comparison-cell comparison-check"><i class="fas fa-check"></i></div>
+        
+        <div class="comparison-cell comparison-feature">Notifications natives</div>
+        <div class="comparison-cell comparison-missing"><i class="fas fa-times"></i></div>
+        <div class="comparison-cell comparison-check"><i class="fas fa-check"></i></div>
+        <div class="comparison-cell comparison-check"><i class="fas fa-check"></i></div>
+        
+        <div class="comparison-cell comparison-feature">Mode hors ligne</div>
+        <div class="comparison-cell comparison-missing"><i class="fas fa-times"></i></div>
+        <div class="comparison-cell comparison-check"><i class="fas fa-check"></i></div>
+        <div class="comparison-cell comparison-check"><i class="fas fa-check"></i></div>
+        
+        <div class="comparison-cell comparison-feature">Partage de fichiers (100MB)</div>
+        <div class="comparison-cell comparison-check"><i class="fas fa-check"></i></div>
+        <div class="comparison-cell comparison-check"><i class="fas fa-check"></i></div>
+        <div class="comparison-cell comparison-check"><i class="fas fa-check"></i></div>
+        
+        <div class="comparison-cell comparison-feature">Synchronisation en temps réel</div>
+        <div class="comparison-cell comparison-check"><i class="fas fa-check"></i></div>
+        <div class="comparison-cell comparison-check"><i class="fas fa-check"></i></div>
+        <div class="comparison-cell comparison-check"><i class="fas fa-check"></i></div>
+    </div>
+    
+    <!-- Version Mobile (visible sur téléphone) -->
+    <div class="comparison-mobile">
+        <div class="mobile-platform">
+            <h4>Application Web</h4>
+            <div class="mobile-feature">
+                <span>Traduction instantanée</span>
+                <span><i class="fas fa-check" style="color: #2ecc71;"></i></span>
+            </div>
+            <div class="mobile-feature">
+                <span>Notifications natives</span>
+                <span><i class="fas fa-times" style="color: #e74c3c;"></i></span>
+            </div>
+            <div class="mobile-feature">
+                <span>Mode hors ligne</span>
+                <span><i class="fas fa-times" style="color: #e74c3c;"></i></span>
+            </div>
+        </div>
+        
+        <div class="mobile-platform">
+            <h4>Application Desktop</h4>
+            <div class="mobile-feature">
+                <span>Traduction instantanée</span>
+                <span><i class="fas fa-check" style="color: #2ecc71;"></i></span>
+            </div>
+            <div class="mobile-feature">
+                <span>Notifications natives</span>
+                <span><i class="fas fa-check" style="color: #2ecc71;"></i></span>
+            </div>
+            <div class="mobile-feature">
+                <span>Mode hors ligne</span>
+                <span><i class="fas fa-check" style="color: #2ecc71;"></i></span>
+            </div>
+        </div>
+        
+        <div class="mobile-platform">
+            <h4>Application Mobile</h4>
+            <div class="mobile-feature">
+                <span>Traduction instantanée</span>
+                <span><i class="fas fa-check" style="color: #2ecc71;"></i></span>
+            </div>
+            <div class="mobile-feature">
+                <span>Notifications natives</span>
+                <span><i class="fas fa-check" style="color: #2ecc71;"></i></span>
+            </div>
+            <div class="mobile-feature">
+                <span>Mode hors ligne</span>
+                <span><i class="fas fa-check" style="color: #2ecc71;"></i></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="install-guide">
+    <h2 class="guide-title">Comment Installer MISPA</h2>
+    
+    <div class="guide-steps">
+        <div class="guide-step">
+            <div class="step-number">1</div>
+            <h4>Téléchargez</h4>
+            <p>Téléchargez l'installateur pour votre système d'exploitation</p>
+        </div>
+        
+        <div class="guide-step">
+            <div class="step-number">2</div>
+            <h4>Installez</h4>
+            <p>Exécutez l'installateur et suivez les instructions à l'écran</p>
+        </div>
+        
+        <div class="guide-step">
+            <div class="step-number">3</div>
+            <h4>Connectez-vous</h4>
+            <p>Utilisez votre compte MISPA existant ou créez-en un nouveau</p>
+        </div>
+        
+        <div class="guide-step">
+            <div class="step-number">4</div>
+            <h4>Commencez</h4>
+            <p>Commencez à communiquer sans barrières linguistiques !</p>
+        </div>
+    </div>
+</div>
+
+<div style="text-align: center; padding: 40px 20px; background: rgba(10, 14, 23, 0.7); border-radius: 16px; margin: 40px 0;">
+    <h3 style="margin-bottom: 20px; color: white;">Questions sur l'installation ?</h3>
+    <p style="color: #a0a0c0; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto;">
+        Consultez notre guide d'installation détaillé ou contactez notre support pour de l'aide.
+    </p>
+    
+    <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+        <a href="{{ url_for('help_page') }}" class="btn btn-secondary">
+            <i class="fas fa-question-circle"></i> Guide d'Aide
+        </a>
+        <a href="{{ url_for('contact') }}" class="btn btn-primary">
+            <i class="fas fa-headset"></i> Contacter le Support
+        </a>
+        <a href="{{ url_for('index') }}" class="btn btn-primary">
+            <i class="fas fa-home"></i> Page d'Accueil
+        </a>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Simulation de téléchargement
+    const downloadButtons = document.querySelectorAll('.download-btn[href="#"]');
+    downloadButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const platform = this.textContent.includes('Windows') ? 'Windows' :
+                            this.textContent.includes('macOS') ? 'macOS' :
+                            this.textContent.includes('Linux') ? 'Linux' :
+                            this.textContent.includes('App Store') ? 'iOS' :
+                            this.textContent.includes('Google Play') ? 'Android' : 'Application';
+            
+            alert(`Merci ! Le téléchargement de MISPA pour ${platform} commencera bientôt.\n\nNote: Les applications desktop et mobile sont en développement et seront disponibles prochainement.`);
+        });
+    });
+    
+    // Animation des étapes
+    const steps = document.querySelectorAll('.guide-step');
+    steps.forEach((step, index) => {
+        step.style.opacity = '0';
+        step.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            step.style.transition = 'all 0.5s ease';
+            step.style.opacity = '1';
+            step.style.transform = 'translateY(0)';
+        }, 300 * index);
+    });
+});
+</script>
+{% endblock %}

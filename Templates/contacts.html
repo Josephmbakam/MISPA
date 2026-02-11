@@ -1,0 +1,817 @@
+{% extends "base.html" %}
+
+{% block title %}Contacts - MISPA 7.0{% endblock %}
+
+{% block extra_css %}
+<style>
+    .contacts-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 30px;
+    }
+
+    .contacts-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .contacts-header h1 {
+        font-size: 36px;
+        color: white;
+    }
+
+    .contacts-header p {
+        color: #a0a0c0;
+        font-size: 16px;
+    }
+
+    .contacts-search {
+        display: flex;
+        gap: 15px;
+        max-width: 500px;
+        flex: 1;
+    }
+
+    .search-input {
+        flex: 1;
+        padding: 12px 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        color: white;
+        font-size: 16px;
+    }
+
+    .search-input:focus {
+        outline: none;
+        border-color: #667eea;
+    }
+
+    .search-btn {
+        padding: 12px 24px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .contacts-actions {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+
+    .action-btn {
+        padding: 12px 24px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        color: white;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+
+    .action-btn:hover {
+        background: rgba(102, 126, 234, 0.1);
+        border-color: #667eea;
+    }
+
+    .contacts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 25px;
+        margin-top: 30px;
+    }
+
+    .contact-card {
+        background: rgba(30, 35, 50, 0.7);
+        border-radius: 16px;
+        padding: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s;
+        position: relative;
+    }
+
+    .contact-card:hover {
+        transform: translateY(-5px);
+        border-color: #667eea;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .contact-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .contact-avatar {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: white;
+        font-weight: 600;
+    }
+
+    .contact-info {
+        flex: 1;
+    }
+
+    .contact-name {
+        font-size: 20px;
+        color: white;
+        margin-bottom: 5px;
+    }
+
+    .contact-status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+    }
+
+    .online-dot {
+        width: 10px;
+        height: 10px;
+        background: #2ecc71;
+        border-radius: 50%;
+    }
+
+    .offline-dot {
+        width: 10px;
+        height: 10px;
+        background: #e74c3c;
+        border-radius: 50%;
+    }
+
+    .contact-details {
+        margin: 20px 0;
+        padding: 20px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+        color: #a0a0c0;
+    }
+
+    .detail-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .detail-item i {
+        width: 20px;
+        color: #667eea;
+    }
+
+    .contact-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .contact-btn {
+        flex: 1;
+        padding: 10px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-size: 14px;
+        transition: all 0.3s;
+    }
+
+    .btn-message {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+    }
+
+    .btn-message:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-add {
+        background: rgba(46, 204, 113, 0.1);
+        color: #2ecc71;
+        border: 1px solid rgba(46, 204, 113, 0.3);
+    }
+
+    .btn-add:hover {
+        background: rgba(46, 204, 113, 0.2);
+    }
+
+    .btn-remove {
+        background: rgba(231, 76, 60, 0.1);
+        color: #e74c3c;
+        border: 1px solid rgba(231, 76, 60, 0.3);
+    }
+
+    .btn-remove:hover {
+        background: rgba(231, 76, 60, 0.2);
+    }
+
+    .no-contacts {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 60px 20px;
+        color: #a0a0c0;
+    }
+
+    .no-contacts i {
+        font-size: 60px;
+        margin-bottom: 20px;
+        color: rgba(102, 126, 234, 0.5);
+    }
+
+    .no-contacts h3 {
+        color: white;
+        margin-bottom: 15px;
+        font-size: 24px;
+    }
+
+    .groups-section {
+        margin-top: 60px;
+        padding-top: 40px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .section-title {
+        font-size: 28px;
+        color: white;
+        margin-bottom: 30px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .section-title i {
+        color: #667eea;
+    }
+
+    .groups-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 25px;
+    }
+
+    .group-card {
+        background: rgba(30, 35, 50, 0.7);
+        border-radius: 16px;
+        padding: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s;
+    }
+
+    .group-card:hover {
+        transform: translateY(-5px);
+        border-color: #667eea;
+    }
+
+    .group-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .group-avatar {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        color: white;
+    }
+
+    .group-info {
+        flex: 1;
+    }
+
+    .group-name {
+        font-size: 18px;
+        color: white;
+        margin-bottom: 5px;
+    }
+
+    .group-members {
+        font-size: 14px;
+        color: #a0a0c0;
+    }
+
+    .group-desc {
+        color: #a0a0c0;
+        margin-bottom: 20px;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+        .contacts-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .contacts-search {
+            width: 100%;
+        }
+        
+        .contacts-grid,
+        .groups-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .contact-actions {
+            flex-direction: column;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="contacts-container">
+    <div class="contacts-header">
+        <div>
+            <h1>Mes Contacts</h1>
+            <p>Gérez vos contacts et groupes de discussion</p>
+        </div>
+        
+        <div class="contacts-search">
+            <input type="text" class="search-input" placeholder="Rechercher un contact..." id="searchInput">
+            <button class="search-btn" id="searchBtn">
+                <i class="fas fa-search"></i> Rechercher
+            </button>
+        </div>
+    </div>
+
+    <div class="contacts-actions">
+        <button class="action-btn" onclick="openNewContactModal()">
+            <i class="fas fa-user-plus"></i> Ajouter un contact
+        </button>
+        <button class="action-btn" onclick="openNewGroupModal()">
+            <i class="fas fa-users"></i> Créer un groupe
+        </button>
+        <a href="{{ url_for('chat') }}" class="action-btn">
+            <i class="fas fa-comments"></i> Retour au chat
+        </a>
+    </div>
+
+    <div class="contacts-grid" id="contactsGrid">
+        {% if users %}
+            {% for user in users %}
+            <div class="contact-card" data-user-id="{{ user.id }}">
+                <div class="contact-header">
+                    <div class="contact-avatar">
+                        {{ user.username[:1]|upper }}
+                    </div>
+                    <div class="contact-info">
+                        <div class="contact-name">{{ user.username }}</div>
+                        <div class="contact-status">
+                            {% if user.is_online %}
+                            <span class="online-dot"></span> En ligne
+                            {% else %}
+                            <span class="offline-dot"></span> Hors ligne
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-details">
+                    <div class="detail-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>{{ user.email }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-language"></i>
+                        <span>{{ config.SUPPORTED_LANGUAGES.get(user.language, user.language) }}</span>
+                    </div>
+                </div>
+
+                <div class="contact-actions">
+                    {% if user.is_contact %}
+                    <button class="contact-btn btn-message" onclick="startChat({{ user.id }})">
+                        <i class="fas fa-comment"></i> Message
+                    </button>
+                    <button class="contact-btn btn-remove" onclick="removeContact({{ user.id }})">
+                        <i class="fas fa-user-minus"></i> Retirer
+                    </button>
+                    {% else %}
+                    <button class="contact-btn btn-add" onclick="addContact({{ user.id }})">
+                        <i class="fas fa-user-plus"></i> Ajouter
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-contacts">
+                <i class="fas fa-users"></i>
+                <h3>Aucun contact trouvé</h3>
+                <p>Commencez par ajouter des contacts pour discuter avec eux</p>
+                <button class="action-btn" onclick="openNewContactModal()" style="margin-top: 20px;">
+                    <i class="fas fa-user-plus"></i> Ajouter votre premier contact
+                </button>
+            </div>
+        {% endif %}
+    </div>
+
+    {% if groups %}
+    <div class="groups-section">
+        <h2 class="section-title">
+            <i class="fas fa-users"></i> Mes Groupes
+        </h2>
+        
+        <div class="groups-grid">
+            {% for group in groups %}
+            <div class="group-card">
+                <div class="group-header">
+                    <div class="group-avatar">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="group-info">
+                        <div class="group-name">{{ group.name }}</div>
+                        <div class="group-members">{{ group.member_count }} membres</div>
+                    </div>
+                </div>
+                
+                <p class="group-desc">{{ group.description or 'Aucune description' }}</p>
+                
+                <button class="contact-btn btn-message" onclick="openGroupChat({{ group.id }})" style="width: 100%;">
+                    <i class="fas fa-comments"></i> Ouvrir le groupe
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Modal pour ajouter un contact -->
+<div id="newContactModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Ajouter un nouveau contact</h3>
+            <button class="modal-close" onclick="closeNewContactModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="form-label">Rechercher un utilisateur</label>
+                <input type="text" class="form-control" id="userSearch" placeholder="Nom d'utilisateur ou email">
+                <div id="searchResults" style="margin-top: 15px;"></div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Ou inviter par email</label>
+                <input type="email" class="form-control" id="inviteEmail" placeholder="email@exemple.com">
+                <button class="btn btn-secondary" onclick="sendInvitation()" style="margin-top: 10px;">
+                    <i class="fas fa-paper-plane"></i> Envoyer une invitation
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal pour créer un groupe -->
+<div id="newGroupModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Créer un nouveau groupe</h3>
+            <button class="modal-close" onclick="closeNewGroupModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="form-label">Nom du groupe</label>
+                <input type="text" class="form-control" id="groupName" placeholder="Nom du groupe">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea class="form-control" id="groupDescription" rows="3" placeholder="Description du groupe (optionnel)"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Ajouter des membres</label>
+                <div id="groupMembers" style="margin-top: 10px;">
+                    {% for user in users if user.is_contact %}
+                    <div class="group-member-option" data-user-id="{{ user.id }}">
+                        <input type="checkbox" id="member_{{ user.id }}">
+                        <label for="member_{{ user.id }}">{{ user.username }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="createGroup()" style="width: 100%; margin-top: 20px;">
+                <i class="fas fa-plus"></i> Créer le groupe
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: rgba(30, 35, 50, 0.95);
+    border-radius: 16px;
+    width: 90%;
+    max-width: 500px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+}
+
+.modal-header {
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    color: white;
+    margin: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.group-member-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    margin-bottom: 5px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.group-member-option:hover {
+    background: rgba(102, 126, 234, 0.1);
+}
+
+.group-member-option input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+}
+
+.group-member-option label {
+    color: white;
+    cursor: pointer;
+    flex: 1;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Recherche en temps réel
+    const searchInput = document.getElementById('searchInput');
+    const contactsGrid = document.getElementById('contactsGrid');
+    
+    searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        const contactCards = contactsGrid.querySelectorAll('.contact-card');
+        
+        contactCards.forEach(card => {
+            const userName = card.querySelector('.contact-name').textContent.toLowerCase();
+            const userEmail = card.querySelector('.detail-item:nth-child(1) span').textContent.toLowerCase();
+            
+            if (userName.includes(searchTerm) || userEmail.includes(searchTerm)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+    
+    // Recherche avancée
+    document.getElementById('searchBtn').addEventListener('click', function() {
+        const searchTerm = searchInput.value.trim();
+        if (searchTerm) {
+            // Ici, vous pourriez faire une recherche plus avancée via AJAX
+            console.log('Recherche avancée pour:', searchTerm);
+        }
+    });
+});
+
+function startChat(userId) {
+    window.location.href = `/chat?contact=${userId}`;
+}
+
+function addContact(userId) {
+    fetch(`/add_contact/${userId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Contact ajouté avec succès !');
+            location.reload();
+        } else {
+            alert('Erreur: ' + (data.error || 'Impossible d\'ajouter le contact'));
+        }
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+        alert('Erreur lors de l\'ajout du contact');
+    });
+}
+
+function removeContact(userId) {
+    if (confirm('Êtes-vous sûr de vouloir retirer ce contact ?')) {
+        fetch(`/remove_contact/${userId}`, {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Contact retiré avec succès');
+                location.reload();
+            }
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            alert('Erreur lors du retrait du contact');
+        });
+    }
+}
+
+function openGroupChat(groupId) {
+    window.location.href = `/chat?group=${groupId}`;
+}
+
+// Modal functions
+function openNewContactModal() {
+    document.getElementById('newContactModal').style.display = 'flex';
+}
+
+function closeNewContactModal() {
+    document.getElementById('newContactModal').style.display = 'none';
+}
+
+function openNewGroupModal() {
+    document.getElementById('newGroupModal').style.display = 'flex';
+}
+
+function closeNewGroupModal() {
+    document.getElementById('newGroupModal').style.display = 'none';
+}
+
+// Recherche d'utilisateurs dans le modal
+document.getElementById('userSearch')?.addEventListener('input', async function() {
+    const searchTerm = this.value.trim();
+    const resultsDiv = document.getElementById('searchResults');
+    
+    if (searchTerm.length < 2) {
+        resultsDiv.innerHTML = '';
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/api/search_users?q=${encodeURIComponent(searchTerm)}`);
+        const data = await response.json();
+        
+        resultsDiv.innerHTML = '';
+        
+        if (data.users.length === 0) {
+            resultsDiv.innerHTML = '<p style="color: #a0a0c0; text-align: center;">Aucun utilisateur trouvé</p>';
+            return;
+        }
+        
+        data.users.forEach(user => {
+            const userDiv = document.createElement('div');
+            userDiv.className = 'group-member-option';
+            userDiv.innerHTML = `
+                <div style="flex: 1;">
+                    <div style="color: white; font-weight: 500;">${user.username}</div>
+                    <div style="color: #a0a0c0; font-size: 12px;">${user.email}</div>
+                </div>
+                ${user.is_contact ? 
+                    '<span style="color: #2ecc71; font-size: 12px;">Déjà contact</span>' : 
+                    `<button class="btn btn-sm btn-secondary" onclick="addContactFromModal(${user.id})">
+                        <i class="fas fa-user-plus"></i> Ajouter
+                    </button>`
+                }
+            `;
+            resultsDiv.appendChild(userDiv);
+        });
+    } catch (error) {
+        console.error('Erreur recherche:', error);
+        resultsDiv.innerHTML = '<p style="color: #e74c3c;">Erreur lors de la recherche</p>';
+    }
+});
+
+function addContactFromModal(userId) {
+    addContact(userId);
+    closeNewContactModal();
+}
+
+function sendInvitation() {
+    const email = document.getElementById('inviteEmail').value;
+    if (!email || !email.includes('@')) {
+        alert('Veuillez entrer une adresse email valide');
+        return;
+    }
+    
+    alert(`Invitation envoyée à ${email}`);
+    document.getElementById('inviteEmail').value = '';
+    closeNewContactModal();
+}
+
+function createGroup() {
+    const name = document.getElementById('groupName').value;
+    const description = document.getElementById('groupDescription').value;
+    
+    if (!name.trim()) {
+        alert('Veuillez entrer un nom pour le groupe');
+        return;
+    }
+    
+    // Récupérer les membres sélectionnés
+    const memberCheckboxes = document.querySelectorAll('#groupMembers input[type="checkbox"]:checked');
+    const memberIds = Array.from(memberCheckboxes).map(cb => parseInt(cb.id.replace('member_', '')));
+    
+    fetch('/api/create_group', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            name: name,
+            description: description,
+            member_ids: memberIds
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(`Groupe "${name}" créé avec succès !`);
+            closeNewGroupModal();
+            location.reload();
+        } else {
+            alert('Erreur: ' + (data.error || 'Impossible de créer le groupe'));
+        }
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+        alert('Erreur lors de la création du groupe');
+    });
+}
+</script>
+{% endblock %}
